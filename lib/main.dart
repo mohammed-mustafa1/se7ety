@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:se7ety/core/routers/app_routers.dart';
 import 'package:se7ety/core/utils/theme.dart';
 import 'package:se7ety/firebase_options.dart';
+import 'package:se7ety/generated/l10n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +18,15 @@ class Se7ety extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      locale: Locale('ar'),
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,
