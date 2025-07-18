@@ -8,7 +8,7 @@ class TextStyles {
   }) {
     return TextStyle(
       fontSize: fontSize ?? 24,
-      fontWeight: fontWeight ?? FontWeight.normal,
+      fontWeight: fontWeight ?? FontWeight.bold,
       color: color,
     );
   }
@@ -20,7 +20,7 @@ class TextStyles {
   }) {
     return TextStyle(
       fontSize: fontSize ?? 20,
-      fontWeight: fontWeight ?? FontWeight.normal,
+      fontWeight: fontWeight ?? FontWeight.bold,
       color: color,
     );
   }
@@ -32,7 +32,7 @@ class TextStyles {
   }) {
     return TextStyle(
       fontSize: fontSize ?? 18,
-      fontWeight: fontWeight ?? FontWeight.normal,
+      fontWeight: fontWeight ?? FontWeight.w600,
       color: color,
     );
   }
