@@ -80,17 +80,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Visibility(
-                    visible: activIndex == onBoardingList.length - 1,
-                    child: MainButton(
-                      width: 80,
-                      height: 50,
-                      onTap: () {
-                        context.pushTo(AppRouter.welcome);
-                      },
-                      text: 'هيا بنا ',
-                    ),
-                  ),
                   AnimatedSmoothIndicator(
                     activeIndex: activIndex,
                     count: onBoardingList.length,
@@ -100,6 +89,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       dotHeight: 12,
                       activeDotColor: AppColors.primaryColor,
                       spacing: 10,
+                    ),
+                  ),
+                  Visibility(
+                    visible: activIndex == onBoardingList.length - 1,
+                    child: MainButton(
+                      width: 80,
+                      height: 50,
+                      onTap: () {
+                        context.pushTo(AppRouter.welcome);
+                      },
+                      text: 'هيا بنا ',
                     ),
                   ),
                 ],

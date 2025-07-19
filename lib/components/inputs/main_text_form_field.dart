@@ -13,6 +13,8 @@ class MainTextFormField extends StatefulWidget {
     this.keyboardType,
     this.inputFormatters,
     this.textInputAction,
+    required this.prefixIcon,
+    this.texAlign,
   });
   final String text;
   final bool? obscureText;
@@ -21,6 +23,8 @@ class MainTextFormField extends StatefulWidget {
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputAction? textInputAction;
+  final IconData prefixIcon;
+  final TextAlign? texAlign;
   @override
   State<MainTextFormField> createState() => _MainTextFormFieldState();
 }
@@ -37,6 +41,7 @@ class _MainTextFormFieldState extends State<MainTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textAlign: widget.texAlign ?? TextAlign.start,
       textInputAction: widget.textInputAction,
       inputFormatters: widget.inputFormatters,
       keyboardType: widget.keyboardType,
@@ -46,6 +51,19 @@ class _MainTextFormFieldState extends State<MainTextFormField> {
       obscureText: obscureText,
       style: TextStyles.getSmall(fontSize: 15),
       decoration: InputDecoration(
+        prefixIcon: Icon(widget.prefixIcon, color: AppColors.primaryColor),
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(24),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(24),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(24),
+        ),
         errorMaxLines: 4,
         hintText: widget.text,
         filled: true,
@@ -61,13 +79,16 @@ class _MainTextFormFieldState extends State<MainTextFormField> {
         suffixIconConstraints: BoxConstraints(minHeight: 22, minWidth: 22),
         suffixIcon:
             widget.obscureText == true
-                ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() => obscureText = !obscureText);
-                    },
-                    // child: SvgPicture.asset(AppAssets.fluentEyeSvg),
+                ? GestureDetector(
+                  onTap: () {
+                    setState(() => obscureText = !obscureText);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Icon(
+                      obscureText ? Icons.visibility : Icons.visibility_off,
+                      color: AppColors.primaryColor,
+                    ),
                   ),
                 )
                 : null,

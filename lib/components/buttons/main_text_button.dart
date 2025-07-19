@@ -25,7 +25,7 @@ class MainTextButton extends StatelessWidget {
           child: Text(
             clickableText,
             style: TextStyles.getSmall(
-              fontSize: 15,
+              fontSize: 16,
               color: AppColors.primaryColor,
             ),
           ),

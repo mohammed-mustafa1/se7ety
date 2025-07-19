@@ -14,6 +14,7 @@ class MainButton extends StatelessWidget {
     this.width,
     this.fontWeight,
     this.radius,
+    this.textsize,
   });
 
   final void Function() onTap;
@@ -25,6 +26,7 @@ class MainButton extends StatelessWidget {
   final double? width;
   final FontWeight? fontWeight;
   final double? radius;
+  final double? textsize;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -46,6 +48,7 @@ class MainButton extends StatelessWidget {
           style: TextStyles.getBody(
             color: textColor ?? AppColors.whiteColor,
             fontWeight: fontWeight,
+            fontSize: textsize,
           ),
         ),
       ),

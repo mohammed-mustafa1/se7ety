@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:se7ety/components/buttons/main_button.dart';
 import 'package:se7ety/core/constants/app_assets.dart';
+import 'package:se7ety/core/extensions/navigation.dart';
+import 'package:se7ety/core/routers/app_routers.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
+import 'package:se7ety/features/auth/data/models/user_enum.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -58,17 +61,27 @@ class WelcomeScreen extends StatelessWidget {
                       backgroundColor: AppColors.accentColor.withAlpha(200),
                       textColor: AppColors.darkColor,
                       fontWeight: FontWeight.bold,
-                      onTap: () {},
+                      onTap: () {
+                        context.pushTo(
+                          AppRouter.register,
+                          extra: UserType.doctor,
+                        );
+                      },
                     ),
                     Gap(16),
                     MainButton(
                       height: 70,
-                      radius: 24,
+                      radius: 20,
                       backgroundColor: AppColors.accentColor.withAlpha(200),
                       text: 'مريض',
                       textColor: AppColors.darkColor,
                       fontWeight: FontWeight.bold,
-                      onTap: () {},
+                      onTap: () {
+                        context.pushTo(
+                          AppRouter.register,
+                          extra: UserType.patient,
+                        );
+                      },
                     ),
                   ],
                 ),
