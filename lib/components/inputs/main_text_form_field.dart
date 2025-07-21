@@ -15,6 +15,7 @@ class MainTextFormField extends StatefulWidget {
     this.textInputAction,
     required this.prefixIcon,
     this.texAlign,
+    this.textDirection,
   });
   final String text;
   final bool? obscureText;
@@ -25,6 +26,7 @@ class MainTextFormField extends StatefulWidget {
   final TextInputAction? textInputAction;
   final IconData prefixIcon;
   final TextAlign? texAlign;
+  final TextDirection? textDirection;
   @override
   State<MainTextFormField> createState() => _MainTextFormFieldState();
 }
@@ -52,6 +54,10 @@ class _MainTextFormFieldState extends State<MainTextFormField> {
       style: TextStyles.getSmall(fontSize: 15),
       decoration: InputDecoration(
         prefixIcon: Icon(widget.prefixIcon, color: AppColors.primaryColor),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(24),
+        ),
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(24),
@@ -69,7 +75,7 @@ class _MainTextFormFieldState extends State<MainTextFormField> {
         filled: true,
         fillColor:
             Theme.of(context).brightness == Brightness.dark
-                ? AppColors.darkColor
+                ? AppColors.darkColor.withValues(alpha: 3)
                 : AppColors.accentColor,
         contentPadding: EdgeInsets.all(16),
         hintStyle: TextStyles.getSmall(

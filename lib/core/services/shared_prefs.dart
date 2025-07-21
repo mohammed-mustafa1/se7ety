@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {
   static late SharedPreferences prefs;
-  static const String kToken = 'kToken';
+  static const String kUserID = 'kUserID';
   static const String kUserInfo = 'kUserInfo';
   static const String kThemeMode = 'kThemeMode';
   static Future<void> init() async {
@@ -13,6 +13,12 @@ class SharedPrefs {
   static Future<void> setString(String key, String value) async {
     await prefs.setString(key, value);
   }
+
+  static saveUserId({required String userID}) {
+    setString(kUserID, userID);
+  }
+
+  static String getUserID() => getString(kUserID);
 
   static String getString(String key) => prefs.getString(key) ?? '';
 

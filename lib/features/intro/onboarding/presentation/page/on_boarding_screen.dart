@@ -18,6 +18,7 @@ class OnBoardingScreen extends StatefulWidget {
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   int activIndex = 0;
+  PageController pageController = PageController(initialPage: 0);
   List<OnBoardingModel> onBoardingList = [
     OnBoardingModel(
       image: AppAssets.onBoarding1,
@@ -44,8 +45,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           Visibility(
             visible: activIndex < onBoardingList.length - 1,
             child: TextButton(
-              style: TextButton.styleFrom(padding: EdgeInsets.all(16)),
-              onPressed: () {},
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+              ),
+              onPressed: () {
+                pageController.animateToPage(
+                  onBoardingList.length - 1,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.linear,
+                );
+                setState(() {});
+              },
               child: Text(
                 'تخطي',
                 style: TextStyles.getBody(color: AppColors.primaryColor),
@@ -60,7 +70,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           children: [
             Expanded(
               child: PageView.builder(
-                controller: PageController(initialPage: 0),
+                controller: pageController,
                 onPageChanged: (value) {
                   activIndex = value;
                   setState(() {});

@@ -1,5 +1,7 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:se7ety/features/auth/data/models/user_enum.dart';
+import 'package:se7ety/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:se7ety/features/auth/presentation/page/login_screen.dart';
 import 'package:se7ety/features/auth/presentation/page/register_screen.dart';
 import 'package:se7ety/features/intro/onboarding/presentation/page/on_boarding_screen.dart';
@@ -24,13 +26,18 @@ class AppRouter {
       GoRoute(
         path: register,
         builder:
-            (context, state) =>
-                RegisterScreen(userType: state.extra as UserType),
+            (context, state) => BlocProvider(
+              create: (context) => AuthCubit(),
+              child: RegisterScreen(userType: state.extra as UserType),
+            ),
       ),
       GoRoute(
         path: login,
         builder:
-            (context, state) => LoginScreen(userType: state.extra as UserType),
+            (context, state) => BlocProvider(
+              create: (context) => AuthCubit(),
+              child: LoginScreen(userType: state.extra as UserType),
+            ),
       ),
     ],
   );

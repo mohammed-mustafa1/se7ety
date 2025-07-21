@@ -10,10 +10,9 @@ showLoadingDialog(context) => showDialog(
         canPop: false,
         child: Center(
           child: SizedBox(
-            height: 150,
             width: 150,
             child: LottieBuilder.asset(
-              AppAssets.loadingAnimation,
+              AppAssets.loadingAnimation3,
               fit: BoxFit.cover,
             ),
           ),
