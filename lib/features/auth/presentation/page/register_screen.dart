@@ -32,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  bool showPassword = true;
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
@@ -50,9 +50,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           context.pop();
           showMainSnackBar(
             context,
-            text: 'تم التسجيل بنجاح',
+            text: 'تم التسجيل بنجاح يرجي اكمال البيانات الشخصية',
             type: SnackBarType.success,
           );
+          if (widget.userType == UserType.doctor) {
+            context.pushToBase(AppRouter.doctorRegister);
+          }
         }
       },
       builder: (context, state) {
@@ -76,7 +79,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       Gap(24),
                       MainTextFormField(
-                        textDirection: TextDirection.rtl,
                         controller: _nameController,
                         validator: (value) {
                           if (value!.replaceAll(' ', '').isEmpty) {
@@ -88,7 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.name,
-                        text: 'الاسم',
+                        hintText: 'الاسم',
                         prefixIcon: Icons.person,
                       ),
                       Gap(24),
@@ -105,7 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
-                        text: 'Email@Example.com',
+                        hintText: 'Email@Example.com',
                         prefixIcon: Icons.email,
                       ),
                       Gap(24),
@@ -120,10 +122,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }
                           return null;
                         },
-                        text: '**********',
+                        hintText: '**********',
                         textInputAction: TextInputAction.done,
                         prefixIcon: Icons.lock,
-                        obscureText: true,
+                        obscureText: showPassword,
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              showPassword = !showPassword;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Icon(
+                              showPassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ),
                       ),
                       Gap(24),
                       MainButton(

@@ -21,4 +21,10 @@ class FireBaseService {
         .doc(patientModel.userId)
         .set(patientModel.toJson());
   }
+
+  static updateDoctorData({required DoctorModel doctorModel}) async {
+    await _doctorCollection
+        .doc(doctorModel.userId)
+        .update(doctorModel.toUpgradeDoctorData());
+  }
 }

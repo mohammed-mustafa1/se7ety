@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -31,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool showPassword = true;
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
@@ -46,8 +45,9 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         } else if (state is AuthSuccess) {
           context.pop();
-          log('state is AuthSuccess');
-          log(state.user.email!);
+          if (widget.userType == UserType.doctor) {
+            context.pushToBase(AppRouter.doctorRegister);
+          } else {}
         }
       },
       builder: (context, state) {
@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                         keyboardType: TextInputType.emailAddress,
-                        text: 'Email@Example.com',
+                        hintText: 'Email@Example.com',
                         textInputAction: TextInputAction.next,
                         prefixIcon: Icons.email,
                       ),
@@ -102,9 +102,25 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                         textInputAction: TextInputAction.done,
-                        text: '********',
+                        hintText: '********',
                         prefixIcon: Icons.lock,
-                        obscureText: true,
+                        obscureText: showPassword,
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              showPassword = !showPassword;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Icon(
+                              showPassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ),
                       ),
                       Gap(12),
                       Text('نسيت كلمة السر ؟', style: TextStyles.getBody()),

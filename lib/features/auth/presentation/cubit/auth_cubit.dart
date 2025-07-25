@@ -85,4 +85,15 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthError(errorMessage: 'حدث خطأ غير متوقع${e.toString()}'));
     }
   }
+
+  Future<void> registerDoctorData({required DoctorModel doctorModel}) async {
+    emit(AuthLoading());
+    try {
+      FireBaseService.updateDoctorData(doctorModel: doctorModel);
+    } on FirebaseException catch (e) {
+      emit(AuthError(errorMessage: 'حدث خطأ اثناء تسجيل الدخول ${e.message}'));
+    } catch (e) {
+      emit(AuthError(errorMessage: 'حدث خطأ غير متوقع${e.toString()}'));
+    }
+  }
 }

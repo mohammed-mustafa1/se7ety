@@ -58,4 +58,21 @@ class DoctorModel {
     data['closeHour'] = closeHour;
     return data;
   }
+
+  Map<String, dynamic> toUpgradeDoctorData() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (userId != null) data['uid'] = userId;
+    if (name != null) data['name'] = name;
+    if (email != null) data['email'] = email;
+    if (phone1 != null) data['phone1'] = phone1;
+    if (phone2 != null) data['phone2'] = phone2;
+    if (address != null) data['address'] = address;
+    if (image != null) data['image'] = image;
+    if (rating != null) data['rating'] = rating;
+    if (specialization != null) data['specialization'] = specialization;
+    if (bio != null) data['bio'] = bio;
+    if (openHour != null) data['openHour'] = openHour;
+    if (closeHour != null) data['closeHour'] = closeHour;
+    return data;
+  }
 }
