@@ -29,8 +29,6 @@ class UploadImageService {
         ),
       );
 
-      log(response.data.toString());
-
       if (response.statusCode == 200) {
         return response.data['url'];
       } else {
