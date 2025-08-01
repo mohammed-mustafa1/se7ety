@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:se7ety/core/extensions/navigation.dart';
+import 'package:se7ety/core/routers/app_routers.dart';
 import 'package:se7ety/core/services/firebase_service.dart';
 import 'package:se7ety/features/auth/data/models/doctor_model.dart';
 import 'package:se7ety/features/patient/home/presentation/widgets/doctor_card.dart';
@@ -25,7 +27,12 @@ class TopRatedDoctorListView extends StatelessWidget {
                   doctor.specialization == null) {
                 return Container();
               } else {
-                return DoctorCard(doctor: doctor);
+                return GestureDetector(
+                  onTap: () {
+                    context.pushTo(AppRouter.doctorProfile, extra: doctor);
+                  },
+                  child: DoctorCard(doctor: doctor),
+                );
               }
             },
             separatorBuilder: (context, index) => Gap(16),

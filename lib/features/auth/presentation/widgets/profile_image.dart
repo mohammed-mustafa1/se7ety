@@ -13,8 +13,8 @@ class ProfileImage extends StatelessWidget {
       child: SizedBox(
         width: 100,
         height: 100,
-        child: Image.file(
-          imageFile,
+        child: Image.asset(
+          '',
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
             return Image.asset(AppAssets.welcomeBg, fit: BoxFit.cover);

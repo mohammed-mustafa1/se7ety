@@ -1,10 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:se7ety/features/auth/data/models/doctor_model.dart';
 import 'package:se7ety/features/auth/data/models/user_enum.dart';
 import 'package:se7ety/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:se7ety/features/auth/presentation/page/doctor_register_screen.dart';
 import 'package:se7ety/features/auth/presentation/page/login_screen.dart';
 import 'package:se7ety/features/auth/presentation/page/register_screen.dart';
+import 'package:se7ety/features/patient/home/presentation/pages/doctor_profile_screen.dart';
 import 'package:se7ety/features/patient/home/presentation/pages/search_screen.dart';
 import 'package:se7ety/features/patient/main/main_screen.dart';
 import 'package:se7ety/features/intro/onboarding/presentation/page/on_boarding_screen.dart';
@@ -20,6 +22,7 @@ class AppRouter {
   static const String doctorRegister = '/doctorRegister';
   static const String mainScreen = '/mainScreen';
   static const String search = '/searchScreen';
+  static const String doctorProfile = '/doctorProfileScreen';
 
   static final routers = GoRouter(
     routes: [
@@ -64,6 +67,12 @@ class AppRouter {
           String keyword = st[0] as String;
           var searchType = st[1] as SearchType;
           return SearchScreen(keyword: keyword, searchType: searchType);
+        },
+      ),
+      GoRoute(
+        path: doctorProfile,
+        builder: (context, state) {
+          return DoctorProfileScreen(doctor: state.extra as DoctorModel);
         },
       ),
     ],
