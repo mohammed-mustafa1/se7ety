@@ -70,6 +70,7 @@ class AuthCubit extends Cubit<AuthState> {
         );
       }
       SharedPrefs.saveUserId(userID: user?.uid ?? ' ');
+      user?.updateDisplayName(name);
       emit(AuthSuccess(user: user!));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

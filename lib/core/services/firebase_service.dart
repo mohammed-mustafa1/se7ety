@@ -6,7 +6,7 @@ class FireBaseService {
   static late FirebaseFirestore _firestore;
   static late CollectionReference _doctorCollection;
   static late CollectionReference _patientsCollection;
-  static init() {
+  static init() async {
     _firestore = FirebaseFirestore.instance;
     _doctorCollection = _firestore.collection('doctors');
     _patientsCollection = _firestore.collection('patients');
@@ -26,5 +26,9 @@ class FireBaseService {
     await _doctorCollection
         .doc(doctorModel.userId)
         .update(doctorModel.toUpgradeDoctorData());
+  }
+
+  static Future<QuerySnapshot<Object?>> getTopRatedDoctors() async {
+    return await _doctorCollection.orderBy('rating', descending: true).get();
   }
 }

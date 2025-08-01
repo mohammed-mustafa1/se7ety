@@ -35,10 +35,6 @@ class AppTheme {
       ),
     ),
     colorScheme: ColorScheme.light(onSurface: AppColors.darkColor),
-    appBarTheme: AppBarTheme(
-      surfaceTintColor: Colors.transparent,
-      iconTheme: IconThemeData(color: AppColors.whiteColor),
-    ),
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -71,10 +67,6 @@ class AppTheme {
         borderRadius: BorderRadius.circular(24),
       ),
       errorStyle: TextStyles.getSmall(),
-    ),
-    appBarTheme: AppBarTheme(
-      surfaceTintColor: Colors.transparent,
-      iconTheme: IconThemeData(color: AppColors.whiteColor),
     ),
   );
 }

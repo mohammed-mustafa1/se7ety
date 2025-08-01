@@ -48,13 +48,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
           );
         } else if (state is AuthSuccess) {
           context.pop();
-          showMainSnackBar(
-            context,
-            text: 'تم التسجيل بنجاح يرجي اكمال البيانات الشخصية',
-            type: SnackBarType.success,
-          );
+
           if (widget.userType == UserType.doctor) {
+            showMainSnackBar(
+              context,
+              text: 'تم التسجيل بنجاح يرجي اكمال البيانات الشخصية',
+              type: SnackBarType.success,
+            );
             context.pushToBase(AppRouter.doctorRegister);
+          } else {
+            showMainSnackBar(
+              context,
+              text: 'تم التسجيل بنجاح',
+              type: SnackBarType.success,
+            );
+            // context.pushToBase(AppRouter.patientHome);
           }
         }
       },
@@ -149,7 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           if (formKey.currentState!.validate()) {
                             log('Success');
                             context.read<AuthCubit>().register(
-                              name: _nameController.text,
+                              name: _nameController.text.toLowerCase(),
                               userType: widget.userType,
                               emailAddress: _emailController.text,
                               password: _passwordController.text,

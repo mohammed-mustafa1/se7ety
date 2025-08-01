@@ -11,7 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  SharedPrefs.init();
+  await SharedPrefs.init();
   FireBaseService.init();
   runApp(Se7ety());
 }

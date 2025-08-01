@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:se7ety/core/constants/app_assets.dart';
 import 'package:se7ety/core/extensions/navigation.dart';
 import 'package:se7ety/core/routers/app_routers.dart';
+import 'package:se7ety/core/services/shared_prefs.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,11 +14,17 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
+    bool isLogedIn = SharedPrefs.getUserID().isNotEmpty;
+    Future.delayed(Duration(seconds: 3)).then((value) {
+      if (isLogedIn) {
+        context.pushToReplace(AppRouter.mainScreen);
+      } else {
+        SharedPrefs.isOnBoardingView
+            ? context.pushToReplace(AppRouter.onBoarding)
+            : context.pushToReplace(AppRouter.welcome);
+      }
+    });
     super.initState();
-
-    Future.delayed(
-      Duration(seconds: 3),
-    ).then((value) => context.pushToBase(AppRouter.onBoarding));
   }
 
   @override

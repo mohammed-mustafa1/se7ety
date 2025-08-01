@@ -6,6 +6,7 @@ class SharedPrefs {
   static const String kUserID = 'kUserID';
   static const String kUserInfo = 'kUserInfo';
   static const String kThemeMode = 'kThemeMode';
+  static const String kIsOnboardingView = 'kIsOnBoardingView';
   static Future<void> init() async {
     prefs = await SharedPreferences.getInstance();
   }
@@ -14,16 +15,30 @@ class SharedPrefs {
     await prefs.setString(key, value);
   }
 
+  static String getString(String key) => prefs.getString(key) ?? '';
+
+  static set isOnBoardingView(bool value) {
+    prefs.setBool(kIsOnboardingView, value);
+  }
+
+  static bool get isOnBoardingView => prefs.getBool(kIsOnboardingView) ?? true;
+
   static saveUserId({required String userID}) {
     setString(kUserID, userID);
   }
 
   static String getUserID() => getString(kUserID);
 
-  static String getString(String key) => prefs.getString(key) ?? '';
-
   static setTheme({required ThemeMode themeMode}) {
     setString(kThemeMode, themeMode.name);
+  }
+
+  static clearAllData(String key) {
+    prefs.clear();
+  }
+
+  static remove(String key) {
+    prefs.remove(key);
   }
 
   static ThemeMode get getTheme {

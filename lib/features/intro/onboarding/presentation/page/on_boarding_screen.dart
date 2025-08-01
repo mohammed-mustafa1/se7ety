@@ -3,6 +3,7 @@ import 'package:se7ety/components/buttons/main_button.dart';
 import 'package:se7ety/core/constants/app_assets.dart';
 import 'package:se7ety/core/extensions/navigation.dart';
 import 'package:se7ety/core/routers/app_routers.dart';
+import 'package:se7ety/core/services/shared_prefs.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
 import 'package:se7ety/features/intro/onboarding/data/model/on_boarding_model.dart';
@@ -49,11 +50,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 16),
               ),
               onPressed: () {
-                pageController.animateToPage(
-                  onBoardingList.length - 1,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.linear,
-                );
+                context.pushToBase(AppRouter.welcome);
+                SharedPrefs.isOnBoardingView = false;
                 setState(() {});
               },
               child: Text(
@@ -107,7 +105,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       width: 80,
                       height: 50,
                       onTap: () {
-                        context.pushTo(AppRouter.welcome);
+                        context.pushToBase(AppRouter.welcome);
+                        SharedPrefs.isOnBoardingView = false;
                       },
                       text: 'هيا بنا ',
                     ),

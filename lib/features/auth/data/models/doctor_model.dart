@@ -6,7 +6,7 @@ class DoctorModel {
   String? phone2;
   String? address;
   String? image;
-  double? rating;
+  int? rating;
   String? specialization;
   String? bio;
   String? openHour;

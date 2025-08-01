@@ -211,6 +211,7 @@ class _DoctorRegisterScreenState extends State<DoctorRegisterScreen> {
                             openHour: openHourController.text,
                             closeHour: closeHourController.text,
                             image: imageUrl,
+                            rating: 0,
                           ),
                         )
                         .then((value) {

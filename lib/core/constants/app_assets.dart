@@ -7,4 +7,6 @@ class AppAssets {
   static const String onBoarding2 = 'assets/images/on2.svg';
   static const String onBoarding3 = 'assets/images/on3.svg';
   static const String welcomeBg = 'assets/images/welcome-bg.png';
+  static const String doctorCard = 'assets/images/doctor-card.svg';
+  static const String noSearch = 'assets/images/no-search.svg';
 }

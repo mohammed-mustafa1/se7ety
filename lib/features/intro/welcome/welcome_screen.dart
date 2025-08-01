@@ -17,7 +17,10 @@ class WelcomeScreen extends StatelessWidget {
       body: Container(
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage(AppAssets.welcomeBg)),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage(AppAssets.welcomeBg),
+          ),
         ),
         width: double.infinity,
         child: Column(
