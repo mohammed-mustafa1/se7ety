@@ -12,7 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await SharedPrefs.init();
-  FireBaseService.init();
+  await FireBaseService.init();
   runApp(Se7ety());
 }
 

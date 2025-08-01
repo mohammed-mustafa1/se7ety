@@ -2,8 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:se7ety/core/constants/specialization.dart';
+import 'package:se7ety/core/extensions/navigation.dart';
+import 'package:se7ety/core/routers/app_routers.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
+import 'package:se7ety/features/patient/home/presentation/pages/search_screen.dart';
 import 'package:se7ety/features/patient/home/presentation/widgets/search_text_form_field.dart';
 import 'package:se7ety/features/patient/home/presentation/widgets/specialization_list_view.dart';
 import 'package:se7ety/features/patient/home/presentation/widgets/top_rated_doctor_list_view.dart';
@@ -59,8 +62,19 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
               ),
               Gap(16),
               SearchTextFormField(
+                onFieldSubmitted: (value) {
+                  context.pushTo(
+                    AppRouter.search,
+                    extra: [searchController.text, SearchType.name],
+                  );
+                },
                 controller: searchController,
-                onPressed: () {},
+                onPressed: () {
+                  context.pushTo(
+                    AppRouter.search,
+                    extra: [searchController.text, SearchType.name],
+                  );
+                },
               ),
               Gap(16),
               Text(

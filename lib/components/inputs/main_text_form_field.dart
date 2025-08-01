@@ -19,6 +19,7 @@ class MainTextFormField extends StatelessWidget {
     this.onTap,
     this.suffixIcon,
     this.maxLength,
+    this.onFieldSubmitted,
   });
   final String hintText;
   final bool? obscureText;
@@ -34,10 +35,11 @@ class MainTextFormField extends StatelessWidget {
   final void Function()? onTap;
   final Widget? suffixIcon;
   final int? maxLength;
-
+  final void Function(String)? onFieldSubmitted;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onFieldSubmitted: onFieldSubmitted,
       maxLength: maxLength,
       onTap: onTap,
       readOnly: readOnly ?? false,

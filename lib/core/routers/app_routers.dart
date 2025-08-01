@@ -5,6 +5,7 @@ import 'package:se7ety/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:se7ety/features/auth/presentation/page/doctor_register_screen.dart';
 import 'package:se7ety/features/auth/presentation/page/login_screen.dart';
 import 'package:se7ety/features/auth/presentation/page/register_screen.dart';
+import 'package:se7ety/features/patient/home/presentation/pages/search_screen.dart';
 import 'package:se7ety/features/patient/main/main_screen.dart';
 import 'package:se7ety/features/intro/onboarding/presentation/page/on_boarding_screen.dart';
 import 'package:se7ety/features/intro/splash/page/splash_screen.dart';
@@ -18,6 +19,7 @@ class AppRouter {
   static const String login = '/login';
   static const String doctorRegister = '/doctorRegister';
   static const String mainScreen = '/mainScreen';
+  static const String search = '/searchScreen';
 
   static final routers = GoRouter(
     routes: [
@@ -54,6 +56,15 @@ class AppRouter {
                 child: DoctorRegisterScreen(),
               ),
             ),
+      ),
+      GoRoute(
+        path: search,
+        builder: (context, state) {
+          var st = state.extra as List;
+          String keyword = st[0] as String;
+          var searchType = st[1] as SearchType;
+          return SearchScreen(keyword: keyword, searchType: searchType);
+        },
       ),
     ],
   );

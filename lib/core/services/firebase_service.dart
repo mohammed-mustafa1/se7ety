@@ -31,4 +31,23 @@ class FireBaseService {
   static Future<QuerySnapshot<Object?>> getTopRatedDoctors() async {
     return await _doctorCollection.orderBy('rating', descending: true).get();
   }
+
+  static Future<QuerySnapshot<Object?>> seachDoctorsByName({
+    required String startAt,
+    required String endAt,
+  }) async {
+    return await _doctorCollection
+        .orderBy('name')
+        .startAt([startAt.toLowerCase()])
+        .endAt(['${endAt.toLowerCase()}\uf8ff'])
+        .get();
+  }
+
+  static Future<QuerySnapshot<Object?>> getDoctorsBySpecialization({
+    required String keyword,
+  }) async {
+    return await _doctorCollection
+        .where('specialization', isEqualTo: keyword.toLowerCase())
+        .get();
+  }
 }

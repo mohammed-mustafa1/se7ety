@@ -7,10 +7,11 @@ class SearchTextFormField extends StatelessWidget {
     super.key,
     required this.onPressed,
     this.controller,
+    this.onFieldSubmitted,
   });
   final void Function()? onPressed;
   final TextEditingController? controller;
-
+  final void Function(String)? onFieldSubmitted;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,6 +25,7 @@ class SearchTextFormField extends StatelessWidget {
         ],
       ),
       child: MainTextFormField(
+        onFieldSubmitted: onFieldSubmitted,
         controller: controller,
         hintText: 'ابحث عن دكتور',
         suffixIcon: IconButton(
