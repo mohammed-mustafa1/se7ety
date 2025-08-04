@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:se7ety/features/intro/welcome/welcome_screen.dart';
+import 'package:se7ety/features/patient/appointments/pages/appointments_screen.dart';
 import 'package:se7ety/features/patient/home/presentation/pages/patient_home_screen.dart';
 import 'package:se7ety/features/patient/search/presentation/page/search_screen.dart';
 import 'package:se7ety/features/patient/home/presentation/widgets/main_nav_bar.dart';
@@ -20,7 +21,7 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> mainscreens = [
     PatientHomeScreen(),
     SearchScreen(),
-    PatientHomeScreen(),
+    AppointmentsScreen(),
     WelcomeScreen(),
   ];
 

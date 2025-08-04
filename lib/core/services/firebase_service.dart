@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:se7ety/core/services/shared_prefs.dart';
 import 'package:se7ety/features/auth/data/models/doctor_model.dart';
 import 'package:se7ety/features/auth/data/models/patient_model.dart';
 import 'package:se7ety/features/patient/booking/data/model/appointment_model.dart';
@@ -58,5 +59,18 @@ class FireBaseService {
     required AppointmentModel appointmentModel,
   }) async {
     return await _appointmentsCollection.doc().set(appointmentModel.toJson());
+  }
+
+  static Future<QuerySnapshot<Object?>> getPatientAppointments() async {
+    return await _appointmentsCollection
+        .where('patientId', isEqualTo: SharedPrefs.getUserID())
+        .orderBy('time', descending: false)
+        .get();
+  }
+
+  static Future<void> deletePatientAppointment({
+    required String documentID,
+  }) async {
+    return await _appointmentsCollection.doc(documentID).delete();
   }
 }

@@ -36,7 +36,7 @@ class DoctorCard extends StatelessWidget {
               width: 70,
               fit: BoxFit.cover,
               errorWidget: (context, url, error) {
-                return Image.asset(AppAssets.welcomeBg, fit: BoxFit.cover);
+                return Image.asset(AppAssets.doc, fit: BoxFit.cover);
               },
             ),
           ),

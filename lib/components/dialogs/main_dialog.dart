@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:se7ety/components/buttons/main_button.dart';
 import 'package:se7ety/core/constants/app_assets.dart';
-import 'package:se7ety/core/extensions/navigation.dart';
 import 'package:se7ety/core/extensions/theme.dart';
-import 'package:se7ety/core/routers/app_routers.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
 
@@ -42,6 +40,7 @@ showAlertDialog(
   BuildContext context, {
   required String text,
   required DialogType type,
+  required void Function() onTap,
 }) => showDialog(
   context: context,
   builder:
@@ -58,14 +57,7 @@ showAlertDialog(
           ),
           actionsAlignment: MainAxisAlignment.center,
           actions: [
-            MainButton(
-              height: 40,
-              width: 100,
-              onTap: () {
-                context.pushTo(AppRouter.mainScreen);
-              },
-              text: 'حسناً',
-            ),
+            MainButton(height: 40, width: 100, onTap: onTap, text: 'حسناً'),
           ],
         ),
       ),

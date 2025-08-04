@@ -24,7 +24,7 @@ class DoctorHeaderSection extends StatelessWidget {
               imageUrl: doctor.image ?? '',
               fit: BoxFit.cover,
               errorWidget: (context, url, error) {
-                return Image.asset(AppAssets.welcomeBg, fit: BoxFit.cover);
+                return Image.asset(AppAssets.doc, fit: BoxFit.cover);
               },
             ),
           ),

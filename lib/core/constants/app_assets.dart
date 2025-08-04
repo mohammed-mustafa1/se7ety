@@ -9,4 +9,6 @@ class AppAssets {
   static const String welcomeBg = 'assets/images/welcome-bg.png';
   static const String doctorCard = 'assets/images/doctor-card.svg';
   static const String noSearch = 'assets/images/no-search.svg';
+  static const String noScheduled = 'assets/images/no_scheduled.svg';
+  static const String doc = 'assets/images/doc.png';
 }

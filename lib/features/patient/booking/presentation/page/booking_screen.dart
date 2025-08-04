@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:se7ety/components/buttons/main_button.dart';
 import 'package:se7ety/components/inputs/main_text_form_field.dart';
 import 'package:se7ety/components/dialogs/main_dialog.dart';
+import 'package:se7ety/core/extensions/navigation.dart';
+import 'package:se7ety/core/routers/app_routers.dart';
 import 'package:se7ety/core/services/firebase_service.dart';
 import 'package:se7ety/core/services/shared_prefs.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
@@ -42,7 +44,7 @@ class _BookingScreenState extends State<BookingScreen> {
       endTime: widget.doctor.closeHour!,
       selectedDate: selectedDate,
     );
-    dateController.text = DateFormat('dd-MM-yyyy').format(selectedDate);
+    dateController.text = DateFormat('dd-MM-yyyy', 'en').format(selectedDate);
   }
 
   @override
@@ -222,6 +224,9 @@ class _BookingScreenState extends State<BookingScreen> {
                         context,
                         text: 'تم الحجز بنجاح',
                         type: DialogType.success,
+                        onTap: () {
+                          context.pushToBase(AppRouter.mainScreen);
+                        },
                       );
                     });
                   }
@@ -244,7 +249,7 @@ class _BookingScreenState extends State<BookingScreen> {
       lastDate: DateTime(2050),
     ).then((value) {
       if (value == null) return;
-      dateController.text = DateFormat('dd-MM-yyyy').format(value);
+      dateController.text = DateFormat('dd-MM-yyyy', 'en').format(value);
       times = getAvailableTimes(
         startTime: widget.doctor.openHour!,
         endTime: widget.doctor.closeHour!,
