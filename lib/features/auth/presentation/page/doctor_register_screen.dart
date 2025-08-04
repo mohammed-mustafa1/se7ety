@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,10 +8,9 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:se7ety/components/buttons/camera_icon_button.dart';
 import 'package:se7ety/components/buttons/main_button.dart';
-import 'package:se7ety/components/dialogs/loading_dialog.dart';
 import 'package:se7ety/components/inputs/main_dropdown_button_form_field.dart';
 import 'package:se7ety/components/inputs/main_text_form_field.dart';
-import 'package:se7ety/components/snack_bars/main_snack_bar.dart';
+import 'package:se7ety/components/dialogs/main_dialog.dart';
 import 'package:se7ety/core/constants/specialization.dart';
 import 'package:se7ety/core/extensions/theme.dart';
 import 'package:se7ety/core/function/show_bottom_sheet.dart';
@@ -39,8 +39,8 @@ class _DoctorRegisterScreenState extends State<DoctorRegisterScreen> {
   TextEditingController closeHourController = TextEditingController();
   TextEditingController phoneController1 = TextEditingController();
   TextEditingController phoneController2 = TextEditingController();
-  TimeOfDay openTime = TimeOfDay.now();
-  TimeOfDay closeTime = TimeOfDay.now();
+  Timestamp openTime = Timestamp.now();
+  Timestamp closeTime = Timestamp.now();
   File imageFile = File('');
   @override
   Widget build(BuildContext context) {
@@ -208,8 +208,8 @@ class _DoctorRegisterScreenState extends State<DoctorRegisterScreen> {
                             phone2: phoneController2.text,
                             specialization: specialization,
                             bio: bioController.text,
-                            openHour: openHourController.text,
-                            closeHour: closeHourController.text,
+                            openHour: openTime,
+                            closeHour: closeTime,
                             image: imageUrl,
                             rating: 0,
                           ),
@@ -219,7 +219,7 @@ class _DoctorRegisterScreenState extends State<DoctorRegisterScreen> {
                           showMainSnackBar(
                             context,
                             text: 'تمت عملية التسجيل بنجاح',
-                            type: SnackBarType.success,
+                            type: DialogType.success,
                           );
                         });
                   }
@@ -255,7 +255,15 @@ class _DoctorRegisterScreenState extends State<DoctorRegisterScreen> {
                   ).then((value) {
                     if (value != null) {
                       openHourController.text = value.format(context);
-                      openTime = value;
+                      openTime = Timestamp.fromDate(
+                        DateTime(
+                          2025,
+                          07,
+                          01,
+                          value.hour,
+                          value.minute,
+                        ).toUtc(),
+                      );
                     }
                     setState(() {});
                   });
@@ -295,11 +303,31 @@ class _DoctorRegisterScreenState extends State<DoctorRegisterScreen> {
                 onTap: () {
                   showTimePicker(
                     context: context,
-                    initialTime: TimeOfDay(hour: openTime.hour + 1, minute: 0),
+                    initialTime: TimeOfDay(
+                      hour:
+                          TimeOfDay(
+                            hour: openTime.toDate().hour,
+                            minute: openTime.toDate().minute,
+                          ).hour +
+                          1,
+                      minute:
+                          TimeOfDay(
+                            hour: openTime.toDate().hour,
+                            minute: openTime.toDate().minute,
+                          ).minute,
+                    ),
                   ).then((value) {
                     if (value != null) {
                       closeHourController.text = value.format(context);
-                      closeTime = value;
+                      closeTime = Timestamp.fromDate(
+                        DateTime(
+                          2025,
+                          07,
+                          01,
+                          value.hour,
+                          value.minute,
+                        ).toUtc(),
+                      );
                     }
                     setState(() {});
                   });
@@ -308,7 +336,7 @@ class _DoctorRegisterScreenState extends State<DoctorRegisterScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'من فضلك حدد ساعات العمل';
-                  } else if (openTime.isAfter(closeTime)) {
+                  } else if (openTime.toDate().isAfter(closeTime.toDate())) {
                     return 'لا يمكن ان يكون وقت الاغلاق قبل وقت الفتح';
                   } else if (openTime == closeTime) {
                     return 'لا يمكن ان يكون وقت الاغلاق ووقت الفتح نفسه';

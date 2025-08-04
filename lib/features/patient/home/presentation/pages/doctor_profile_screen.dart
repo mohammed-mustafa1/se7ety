@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:se7ety/components/buttons/main_button.dart';
+import 'package:se7ety/core/extensions/navigation.dart';
+import 'package:se7ety/core/routers/app_routers.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
 import 'package:se7ety/features/auth/data/models/doctor_model.dart';
@@ -69,7 +71,9 @@ class DoctorProfileScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: MainButton(
-                onTap: () {},
+                onTap: () {
+                  context.pushTo(AppRouter.bookAppointment, extra: doctor);
+                },
                 text: 'احجز موعد الان',
                 fontWeight: FontWeight.bold,
               ),

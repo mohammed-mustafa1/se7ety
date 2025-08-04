@@ -32,7 +32,7 @@ class ClinicAddressInfoSection extends StatelessWidget {
               ),
               Gap(16),
               Text(
-                '${doctor.openHour ?? ''} - ${doctor.closeHour ?? ''}',
+                '${TimeOfDay.fromDateTime(doctor.openHour!.toDate()).format(context)} - ${TimeOfDay.fromDateTime(doctor.closeHour!.toDate()).format(context)}',
                 style: TextStyles.getBody(),
               ),
             ],
@@ -45,7 +45,9 @@ class ClinicAddressInfoSection extends StatelessWidget {
                 child: Icon(Icons.location_on, color: AppColors.whiteColor),
               ),
               Gap(16),
-              Text(doctor.address ?? '', style: TextStyles.getBody()),
+              Flexible(
+                child: Text(doctor.address ?? '', style: TextStyles.getBody()),
+              ),
             ],
           ),
         ],

@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:se7ety/core/constants/app_assets.dart';
+import 'package:se7ety/core/extensions/navigation.dart';
+import 'package:se7ety/core/routers/app_routers.dart';
 import 'package:se7ety/core/services/firebase_service.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
 import 'package:se7ety/features/auth/data/models/doctor_model.dart';
-import 'package:se7ety/features/patient/home/presentation/widgets/search_text_form_field.dart';
+import 'package:se7ety/features/patient/search/presentation/widgets/search_text_form_field.dart';
 import 'package:se7ety/features/patient/home/presentation/widgets/doctor_card.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -76,13 +78,15 @@ class _SearchScreenState extends State<SearchScreen> {
                 future: future,
 
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
+                  if (snapshot.hasError) {
                     return Center(
                       child: Center(child: Text(snapshot.error.toString())),
                     );
-                  } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                     return emptyUi();
                   } else {
                     return ListView.separated(
@@ -96,7 +100,15 @@ class _SearchScreenState extends State<SearchScreen> {
                         return doctor.specialization == '' ||
                                 doctor.specialization == null
                             ? Container()
-                            : DoctorCard(doctor: doctor);
+                            : GestureDetector(
+                              onTap: () {
+                                context.pushTo(
+                                  AppRouter.doctorProfile,
+                                  extra: doctor,
+                                );
+                              },
+                              child: DoctorCard(doctor: doctor),
+                            );
                       },
                     );
                   }

@@ -6,8 +6,9 @@ import 'package:se7ety/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:se7ety/features/auth/presentation/page/doctor_register_screen.dart';
 import 'package:se7ety/features/auth/presentation/page/login_screen.dart';
 import 'package:se7ety/features/auth/presentation/page/register_screen.dart';
+import 'package:se7ety/features/patient/booking/presentation/page/booking_screen.dart';
 import 'package:se7ety/features/patient/home/presentation/pages/doctor_profile_screen.dart';
-import 'package:se7ety/features/patient/home/presentation/pages/search_screen.dart';
+import 'package:se7ety/features/patient/search/presentation/page/search_screen.dart';
 import 'package:se7ety/features/patient/main/main_screen.dart';
 import 'package:se7ety/features/intro/onboarding/presentation/page/on_boarding_screen.dart';
 import 'package:se7ety/features/intro/splash/page/splash_screen.dart';
@@ -23,6 +24,7 @@ class AppRouter {
   static const String mainScreen = '/mainScreen';
   static const String search = '/searchScreen';
   static const String doctorProfile = '/doctorProfileScreen';
+  static const String bookAppointment = '/bookAppointmentScreen';
 
   static final routers = GoRouter(
     routes: [
@@ -73,6 +75,12 @@ class AppRouter {
         path: doctorProfile,
         builder: (context, state) {
           return DoctorProfileScreen(doctor: state.extra as DoctorModel);
+        },
+      ),
+      GoRoute(
+        path: bookAppointment,
+        builder: (context, state) {
+          return BookingScreen(doctor: state.extra as DoctorModel);
         },
       ),
     ],

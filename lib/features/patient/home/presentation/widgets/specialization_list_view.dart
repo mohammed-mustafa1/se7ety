@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:se7ety/core/extensions/navigation.dart';
 import 'package:se7ety/core/routers/app_routers.dart';
-import 'package:se7ety/features/patient/home/presentation/pages/search_screen.dart';
+import 'package:se7ety/features/patient/search/presentation/page/search_screen.dart';
 import 'package:se7ety/features/patient/home/presentation/widgets/specialization_list_view_item.dart';
 
 class SpecializationListView extends StatelessWidget {

@@ -6,8 +6,8 @@ import 'package:se7ety/core/extensions/navigation.dart';
 import 'package:se7ety/core/routers/app_routers.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
-import 'package:se7ety/features/patient/home/presentation/pages/search_screen.dart';
-import 'package:se7ety/features/patient/home/presentation/widgets/search_text_form_field.dart';
+import 'package:se7ety/features/patient/search/presentation/page/search_screen.dart';
+import 'package:se7ety/features/patient/search/presentation/widgets/search_text_form_field.dart';
 import 'package:se7ety/features/patient/home/presentation/widgets/specialization_list_view.dart';
 import 'package:se7ety/features/patient/home/presentation/widgets/top_rated_doctor_list_view.dart';
 

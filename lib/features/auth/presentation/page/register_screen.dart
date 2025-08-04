@@ -6,9 +6,8 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:se7ety/components/buttons/main_button.dart';
 import 'package:se7ety/components/buttons/main_text_button.dart';
-import 'package:se7ety/components/dialogs/loading_dialog.dart';
 import 'package:se7ety/components/inputs/main_text_form_field.dart';
-import 'package:se7ety/components/snack_bars/main_snack_bar.dart';
+import 'package:se7ety/components/dialogs/main_dialog.dart';
 import 'package:se7ety/core/constants/app_assets.dart';
 import 'package:se7ety/core/extensions/navigation.dart';
 import 'package:se7ety/core/extensions/validation.dart';
@@ -44,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           showMainSnackBar(
             context,
             text: state.errorMessage,
-            type: SnackBarType.error,
+            type: DialogType.error,
           );
         } else if (state is AuthSuccess) {
           context.pop();
@@ -53,14 +52,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
             showMainSnackBar(
               context,
               text: 'تم التسجيل بنجاح يرجي اكمال البيانات الشخصية',
-              type: SnackBarType.success,
+              type: DialogType.success,
             );
             context.pushToBase(AppRouter.doctorRegister);
           } else {
             showMainSnackBar(
               context,
               text: 'تم التسجيل بنجاح',
-              type: SnackBarType.success,
+              type: DialogType.success,
             );
             // context.pushToBase(AppRouter.patientHome);
           }

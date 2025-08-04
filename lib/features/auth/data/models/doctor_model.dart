@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class DoctorModel {
   String? userId;
   String? name;
@@ -9,8 +11,8 @@ class DoctorModel {
   int? rating;
   String? specialization;
   String? bio;
-  String? openHour;
-  String? closeHour;
+  Timestamp? openHour;
+  Timestamp? closeHour;
 
   DoctorModel({
     this.userId,
