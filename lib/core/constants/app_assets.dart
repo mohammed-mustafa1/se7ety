@@ -11,4 +11,5 @@ class AppAssets {
   static const String noSearch = 'assets/images/no-search.svg';
   static const String noScheduled = 'assets/images/no_scheduled.svg';
   static const String doc = 'assets/images/doc.png';
+  static const String person = 'assets/images/person.png';
 }

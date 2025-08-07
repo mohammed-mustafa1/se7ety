@@ -72,7 +72,7 @@ class _DoctorRegisterScreenState extends State<DoctorRegisterScreen> {
                       Center(
                         child: Stack(
                           children: [
-                            ProfileImage(imageFile: imageFile),
+                            // ProfileImage(imageNetworkUrl: imageFile.path),
                             Positioned(
                               bottom: 0,
                               child: CameraIconButton(

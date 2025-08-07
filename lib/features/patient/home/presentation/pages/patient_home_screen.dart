@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:se7ety/core/constants/specialization.dart';
 import 'package:se7ety/core/extensions/navigation.dart';
+import 'package:se7ety/core/extensions/theme.dart';
 import 'package:se7ety/core/routers/app_routers.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
@@ -34,7 +35,16 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
         surfaceTintColor: Colors.transparent,
         actionsPadding: EdgeInsets.symmetric(horizontal: 20),
         actions: [Icon(Icons.notifications_active)],
-        title: Text('صــحـتـي', style: TextStyles.getHeadLine2()),
+        title: Text('صــحّـتـي'),
+        titleTextStyle: TextStyles.getHeadLine2(
+          fontWeight: FontWeight.bold,
+          color:
+              context.brightness == Brightness.light
+                  ? AppColors.darkColor
+                  : AppColors.whiteColor,
+        ),
+        backgroundColor: Colors.transparent,
+        foregroundColor: AppColors.darkColor,
         centerTitle: true,
       ),
       body: SingleChildScrollView(

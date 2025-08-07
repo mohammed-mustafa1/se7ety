@@ -33,8 +33,8 @@ class SharedPrefs {
     setString(kThemeMode, themeMode.name);
   }
 
-  static clearAllData(String key) {
-    prefs.clear();
+  static Future<void> clearAllData() async {
+    await prefs.clear();
   }
 
   static remove(String key) {

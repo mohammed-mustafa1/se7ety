@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:se7ety/components/buttons/main_button.dart';
 import 'package:se7ety/core/extensions/navigation.dart';
 import 'package:se7ety/core/routers/app_routers.dart';
@@ -17,18 +16,7 @@ class DoctorProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
-        foregroundColor: AppColors.whiteColor,
-        centerTitle: true,
-        title: Text(
-          'بيانات الدكتور',
-          style: TextStyles.getTitle(
-            color: AppColors.whiteColor,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+      appBar: AppBar(title: Text('بيانات الدكتور')),
 
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -37,18 +25,15 @@ class DoctorProfileScreen extends StatelessWidget {
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
+                  spacing: 16,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     DoctorHeaderSection(doctor: doctor),
-                    Gap(16),
-
                     Text(
                       'نبذه تعريفية',
                       style: TextStyles.getBody(fontWeight: FontWeight.bold),
                     ),
-                    Gap(16),
                     Text(doctor.bio ?? '', style: TextStyles.getBody()),
-                    Gap(16),
                     ClinicAddressInfoSection(doctor: doctor),
                     Divider(
                       thickness: 1.5,
@@ -56,14 +41,14 @@ class DoctorProfileScreen extends StatelessWidget {
                       indent: 16,
                       color: AppColors.grayColor.withValues(alpha: 0.5),
                     ),
-                    Gap(16),
                     Text(
                       'معلومات الاتصال',
                       style: TextStyles.getBody(fontWeight: FontWeight.bold),
                     ),
-                    Gap(16),
-                    ConnectiosInfoSection(doctor: doctor),
-                    Gap(16),
+                    ConnectiosInfoSection(
+                      email: doctor.email ?? '',
+                      phone: doctor.phone1 ?? '',
+                    ),
                   ],
                 ),
               ),

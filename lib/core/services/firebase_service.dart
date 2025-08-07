@@ -16,17 +16,21 @@ class FireBaseService {
     _appointmentsCollection = _firestore.collection('appointments');
   }
 
-  static createDoctor({required DoctorModel doctorModel}) async {
+  static Future<void> createDoctor({required DoctorModel doctorModel}) async {
     await _doctorCollection.doc(doctorModel.userId).set(doctorModel.toJson());
   }
 
-  static createPatient({required PatientModel patientModel}) async {
+  static Future<void> createPatient({
+    required PatientModel patientModel,
+  }) async {
     await _patientsCollection
         .doc(patientModel.userId)
         .set(patientModel.toJson());
   }
 
-  static updateDoctorData({required DoctorModel doctorModel}) async {
+  static Future<void> updateDoctorData({
+    required DoctorModel doctorModel,
+  }) async {
     await _doctorCollection
         .doc(doctorModel.userId)
         .update(doctorModel.toUpgradeDoctorData());
@@ -34,6 +38,18 @@ class FireBaseService {
 
   static Future<QuerySnapshot<Object?>> getTopRatedDoctors() async {
     return await _doctorCollection.orderBy('rating', descending: true).get();
+  }
+
+  static Future<DocumentSnapshot<Object?>> getPatientData() async {
+    return await _patientsCollection.doc(SharedPrefs.getUserID()).get();
+  }
+
+  static Future<void> updatePatientData({
+    required PatientModel patientModel,
+  }) async {
+    return await _patientsCollection
+        .doc(SharedPrefs.getUserID())
+        .update(patientModel.toUpdatePatientData());
   }
 
   static Future<QuerySnapshot<Object?>> seachDoctorsByName({

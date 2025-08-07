@@ -42,6 +42,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+
         actions: [
           Visibility(
             visible: activIndex < onBoardingList.length - 1,

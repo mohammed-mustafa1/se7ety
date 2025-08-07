@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
-import 'package:se7ety/features/auth/data/models/doctor_model.dart';
 
 class ConnectiosInfoSection extends StatelessWidget {
-  const ConnectiosInfoSection({super.key, required this.doctor});
+  const ConnectiosInfoSection({
+    super.key,
+    required this.phone,
+    required this.email,
+  });
 
-  final DoctorModel doctor;
+  final String phone;
+  final String email;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,7 @@ class ConnectiosInfoSection extends StatelessWidget {
                 child: Icon(Icons.email, color: AppColors.whiteColor),
               ),
               Gap(16),
-              Text(doctor.email ?? '', style: TextStyles.getBody()),
+              Text(email, style: TextStyles.getBody()),
             ],
           ),
           Gap(16),
@@ -39,7 +43,7 @@ class ConnectiosInfoSection extends StatelessWidget {
                 child: Icon(Icons.phone, color: AppColors.whiteColor),
               ),
               Gap(16),
-              Text(doctor.phone1 ?? '', style: TextStyles.getBody()),
+              Text(phone, style: TextStyles.getBody()),
             ],
           ),
         ],

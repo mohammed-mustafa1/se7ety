@@ -7,7 +7,12 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     fontFamily: AppFonts.cairo,
-
+    appBarTheme: AppBarTheme(
+      centerTitle: true,
+      backgroundColor: AppColors.primaryColor,
+      foregroundColor: AppColors.whiteColor,
+      titleTextStyle: TextStyles.getTitle(),
+    ),
     inputDecorationTheme: InputDecorationTheme(
       suffixIconConstraints: BoxConstraints(minHeight: 22, minWidth: 22),
       errorMaxLines: 4,
@@ -40,7 +45,12 @@ class AppTheme {
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     fontFamily: AppFonts.cairo,
-    colorScheme: ColorScheme.dark(onSurface: AppColors.whiteColor),
+    appBarTheme: AppBarTheme(
+      centerTitle: true,
+      backgroundColor: AppColors.primaryColor,
+      foregroundColor: AppColors.whiteColor,
+      titleTextStyle: TextStyles.getTitle(),
+    ),
     inputDecorationTheme: InputDecorationTheme(
       suffixIconConstraints: BoxConstraints(minHeight: 22, minWidth: 22),
       errorMaxLines: 4,
@@ -68,5 +78,6 @@ class AppTheme {
       ),
       errorStyle: TextStyles.getSmall(),
     ),
+    colorScheme: ColorScheme.dark(onSurface: AppColors.whiteColor),
   );
 }

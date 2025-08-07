@@ -39,18 +39,11 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: AppColors.whiteColor,
-        backgroundColor: AppColors.primaryColor,
         title: Text(
           widget.searchType == SearchType.specialization
               ? keyword
               : 'ابحث عن دكتور',
-          style: TextStyles.getTitle(
-            color: AppColors.whiteColor,
-            fontWeight: FontWeight.bold,
-          ),
         ),
-        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),

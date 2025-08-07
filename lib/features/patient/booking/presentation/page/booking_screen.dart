@@ -50,12 +50,7 @@ class _BookingScreenState extends State<BookingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: AppColors.primaryColor,
-        foregroundColor: AppColors.whiteColor,
-        title: Text('احجز مع دكتورك', style: TextStyles.getTitle()),
-      ),
+      appBar: AppBar(title: Text('احجز مع دكتورك')),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
