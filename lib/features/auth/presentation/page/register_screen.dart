@@ -61,7 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               text: 'تم التسجيل بنجاح',
               type: DialogType.success,
             );
-            // context.pushToBase(AppRouter.patientHome);
+            context.pushToBase(AppRouter.mainScreen);
           }
         }
       },

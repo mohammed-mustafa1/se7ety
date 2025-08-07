@@ -52,6 +52,7 @@ class _SearchScreenState extends State<SearchScreen> {
             Visibility(
               visible: widget.searchType == SearchType.nameWithSearchBar,
               child: SearchTextFormField(
+                hintText: 'ابحث عن دكتور',
                 controller: searchController,
                 onFieldSubmitted:
                     (value) => setState(() {

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:se7ety/features/auth/data/models/user_enum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {
   static late SharedPreferences prefs;
   static const String kUserID = 'kUserID';
-  static const String kUserInfo = 'kUserInfo';
+  static const String kUserType = 'kUserType';
   static const String kThemeMode = 'kThemeMode';
   static const String kIsOnboardingView = 'kIsOnBoardingView';
   static Future<void> init() async {
@@ -26,6 +27,12 @@ class SharedPrefs {
   static saveUserId({required String userID}) {
     setString(kUserID, userID);
   }
+
+  static saveUserType({required UserType userType}) {
+    setString(kUserType, userType.name);
+  }
+
+  static String getUserType() => getString(kUserType);
 
   static String getUserID() => getString(kUserID);
 

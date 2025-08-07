@@ -32,7 +32,7 @@ class FireBaseService {
     required DoctorModel doctorModel,
   }) async {
     await _doctorCollection
-        .doc(doctorModel.userId)
+        .doc(SharedPrefs.getUserID())
         .update(doctorModel.toUpgradeDoctorData());
   }
 
@@ -42,6 +42,41 @@ class FireBaseService {
 
   static Future<DocumentSnapshot<Object?>> getPatientData() async {
     return await _patientsCollection.doc(SharedPrefs.getUserID()).get();
+  }
+
+  static Future<DocumentSnapshot<Object?>> getDoctorData() async {
+    return await _doctorCollection.doc(SharedPrefs.getUserID()).get();
+  }
+
+  static Future<List<DocumentSnapshot>> getPatientsForDoctor({
+    required String keyword,
+  }) async {
+    // get all appointments for current doctor
+    final appointmentsSnapshot =
+        await _appointmentsCollection
+            .where('doctorId', isEqualTo: SharedPrefs.getUserID())
+            .get();
+
+    // get all patient ids
+    final patientIds =
+        appointmentsSnapshot.docs
+            .map((doc) => doc['patientId'] as String)
+            .toSet()
+            .toList();
+    // check if patient ids is empty
+    if (patientIds.isEmpty) return [];
+
+    // get all patients
+    final patientsSnapshot =
+        await _patientsCollection
+            .where(FieldPath.documentId, whereIn: patientIds.take(10).toList())
+            .get();
+
+    // return patients where name contains keyword
+    return patientsSnapshot.docs.where((doc) {
+      final name = (doc['name'] as String).toLowerCase();
+      return name.contains(keyword.toLowerCase());
+    }).toList();
   }
 
   static Future<void> updatePatientData({
@@ -80,6 +115,13 @@ class FireBaseService {
   static Future<QuerySnapshot<Object?>> getPatientAppointments() async {
     return await _appointmentsCollection
         .where('patientId', isEqualTo: SharedPrefs.getUserID())
+        .orderBy('time', descending: false)
+        .get();
+  }
+
+  static Future<QuerySnapshot<Object?>> getDoctorAppointments() async {
+    return await _appointmentsCollection
+        .where('doctorId', isEqualTo: SharedPrefs.getUserID())
         .orderBy('time', descending: false)
         .get();
   }

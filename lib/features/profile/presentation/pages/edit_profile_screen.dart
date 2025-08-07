@@ -10,7 +10,7 @@ import 'package:se7ety/core/services/firebase_service.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
 import 'package:se7ety/features/auth/data/models/patient_model.dart';
-import 'package:se7ety/features/intro/profile/presentation/widgets/edit_profile_item.dart';
+import 'package:se7ety/features/profile/presentation/widgets/edit_profile_item.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -65,7 +65,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               },
               {
                 'title': 'العمر',
-                'subtitle': patient.age ?? '',
+                'subtitle': patient.age.toString(),
                 'editType': EditType.age,
               },
             ];
@@ -122,6 +122,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             fontWeight: FontWeight.bold,
           ),
           content: TextField(
+            maxLines: null,
+            maxLength: editType == EditType.phone ? 11 : null,
             inputFormatters:
                 editType == EditType.age || editType == EditType.phone
                     ? [
@@ -174,7 +176,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         phone: editType == EditType.phone ? value : null,
         city: editType == EditType.city ? value : null,
         bio: editType == EditType.bio ? value : null,
-        age: editType == EditType.age ? value : null,
+        age: editType == EditType.age ? int.tryParse(value) : null,
       ),
     );
     if (editType == EditType.name) {

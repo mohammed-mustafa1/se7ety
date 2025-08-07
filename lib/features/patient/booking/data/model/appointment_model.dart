@@ -11,6 +11,7 @@ class AppointmentModel {
   final Timestamp? date;
   final bool? isComplete;
   final int? rating;
+  final int? patientAge;
 
   AppointmentModel({
     required this.patientId,
@@ -23,6 +24,7 @@ class AppointmentModel {
     required this.date,
     required this.isComplete,
     required this.rating,
+    required this.patientAge,
   });
 
   factory AppointmentModel.fromJson(Map<String, dynamic> json) =>
@@ -37,6 +39,7 @@ class AppointmentModel {
         date: json['time'],
         isComplete: json['isComplete'],
         rating: json['rating'],
+        patientAge: json['patientAge'],
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -50,5 +53,6 @@ class AppointmentModel {
     'time': date,
     'isComplete': isComplete,
     'rating': rating,
+    'patientAge': patientAge,
   };
 }

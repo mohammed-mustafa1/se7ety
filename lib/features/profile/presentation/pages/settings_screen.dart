@@ -7,7 +7,8 @@ import 'package:se7ety/core/extensions/navigation.dart';
 import 'package:se7ety/core/routers/app_routers.dart';
 import 'package:se7ety/core/services/shared_prefs.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
-import 'package:se7ety/features/intro/profile/presentation/widgets/setting_item.dart';
+import 'package:se7ety/features/auth/data/models/user_enum.dart';
+import 'package:se7ety/features/profile/presentation/widgets/setting_item.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -29,7 +30,9 @@ class SettingsScreen extends StatelessWidget {
                       text: 'اعدادات الحساب',
                       icon: Icons.person,
                       onTap: () {
-                        context.pushTo(AppRouter.editProfile);
+                        SharedPrefs.getUserType() == UserType.patient.name
+                            ? context.pushTo(AppRouter.editProfile)
+                            : context.pushTo(AppRouter.doctorEditProfile);
                       },
                     ),
                     SettingItem(text: 'كلمة السر', icon: Icons.security),

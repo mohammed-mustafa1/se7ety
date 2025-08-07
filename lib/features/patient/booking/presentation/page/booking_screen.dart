@@ -12,6 +12,7 @@ import 'package:se7ety/core/services/shared_prefs.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
 import 'package:se7ety/features/auth/data/models/doctor_model.dart';
+import 'package:se7ety/features/auth/data/models/patient_model.dart';
 import 'package:se7ety/features/patient/booking/data/model/appointment_model.dart';
 import 'package:se7ety/features/patient/home/presentation/widgets/doctor_card.dart';
 
@@ -26,6 +27,7 @@ class BookingScreen extends StatefulWidget {
 class _BookingScreenState extends State<BookingScreen> {
   TextEditingController dateController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -35,10 +37,18 @@ class _BookingScreenState extends State<BookingScreen> {
     minute: 0,
     second: 0,
   );
+  PatientModel patient = PatientModel();
   @override
   void initState() {
     super.initState();
-
+    FireBaseService.getPatientData().then((value) {
+      if (value.exists) {
+        patient = PatientModel.fromJson(value.data()! as Map<String, dynamic>);
+        nameController.text = patient.name ?? '';
+        ageController.text = patient.age.toString();
+        phoneController.text = patient.phone ?? '';
+      }
+    });
     times = getAvailableTimes(
       startTime: widget.doctor.openHour!,
       endTime: widget.doctor.closeHour!,
@@ -82,6 +92,22 @@ class _BookingScreenState extends State<BookingScreen> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'من فضلك ادخل الاسم';
+                          }
+                          return null;
+                        },
+                      ),
+                      Text('عمر المريض', style: TextStyles.getBody()),
+                      MainTextFormField(
+                        maxLength: 2,
+                        controller: ageController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        hintText: 'عمر المريض',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'من فضلك ادخل العمر';
                           }
                           return null;
                         },
@@ -213,6 +239,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         date: Timestamp.fromDate(selectedDate),
                         isComplete: false,
                         rating: null,
+                        patientAge: int.parse(ageController.text),
                       ),
                     ).then((value) {
                       showAlertDialog(

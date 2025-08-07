@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:se7ety/components/buttons/main_button.dart';
+import 'package:se7ety/components/dialogs/main_dialog.dart';
+import 'package:se7ety/core/services/firebase_service.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
 import 'package:se7ety/features/patient/booking/data/model/appointment_model.dart';
 
-class AppointmentTile extends StatelessWidget {
-  const AppointmentTile({
+class DoctorAppointmentTile extends StatefulWidget {
+  const DoctorAppointmentTile({
     super.key,
     required this.appointment,
-    required this.onDelete,
+    required this.appointmentId,
   });
   final AppointmentModel appointment;
-  final Function() onDelete;
+  final String appointmentId;
+  @override
+  State<DoctorAppointmentTile> createState() => _DoctorAppointmentTileState();
+}
+
+class _DoctorAppointmentTileState extends State<DoctorAppointmentTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,7 +40,7 @@ class AppointmentTile extends StatelessWidget {
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
           title: Text(
-            'د. ${appointment.doctorName}',
+            widget.appointment.patientName ?? '',
             style: TextStyles.getTitle(color: AppColors.primaryColor),
           ),
 
@@ -58,13 +66,14 @@ class AppointmentTile extends StatelessWidget {
                     DateFormat(
                       'dd-MM-yyyy',
                       'en_US',
-                    ).format(appointment.date!.toDate()),
+                    ).format(widget.appointment.date!.toDate()),
                     style: TextStyles.getBody(),
                   ),
                   Gap(32),
                   Visibility(
                     visible:
-                        appointment.date!.toDate().day == DateTime.now().day,
+                        widget.appointment.date!.toDate().day ==
+                        DateTime.now().day,
                     child: Text(
                       'اليوم',
                       style: TextStyles.getBody(
@@ -85,7 +94,7 @@ class AppointmentTile extends StatelessWidget {
                   Gap(16),
                   Text(
                     TimeOfDay.fromDateTime(
-                      appointment.date!.toDate(),
+                      widget.appointment.date!.toDate(),
                     ).format(context),
                     style: TextStyles.getBody(),
                   ),
@@ -93,37 +102,73 @@ class AppointmentTile extends StatelessWidget {
               ),
             ],
           ),
-          initiallyExpanded: true,
+
           children: [
             Row(
-              spacing: 16,
               children: [
                 Icon(Icons.person, color: AppColors.primaryColor),
-                Flexible(
-                  child: Text(
-                    appointment.patientName ?? '',
-                    style: TextStyles.getBody(),
-                  ),
+                Gap(8),
+                Text(
+                  '${widget.appointment.patientName}',
+                  style: TextStyles.getBody(),
                 ),
-              ],
-            ),
-            Row(
-              spacing: 16,
-              children: [
-                Icon(Icons.location_on, color: AppColors.primaryColor),
-                Flexible(
-                  child: Text(
-                    appointment.location ?? '',
-                    style: TextStyles.getBody(),
-                  ),
+                Spacer(),
+                Text(
+                  '${widget.appointment.patientAge}',
+                  style: TextStyles.getBody(color: AppColors.primaryColor),
+                ),
+                Gap(8),
+                Text(
+                  widget.appointment.patientAge! <= 10 ? 'اعوام' : 'عام',
+                  style: TextStyles.getBody(color: AppColors.primaryColor),
                 ),
               ],
             ),
             Gap(16),
+
+            Row(
+              children: [
+                Icon(Icons.phone, color: AppColors.primaryColor),
+                Gap(8),
+                Text(
+                  '${widget.appointment.phone}',
+                  style: TextStyles.getBody(),
+                ),
+              ],
+            ),
+            Gap(16),
+            Row(
+              children: [
+                Icon(Icons.description, color: AppColors.primaryColor),
+                Gap(8),
+                Text(
+                  '${widget.appointment.description}',
+                  style: TextStyles.getBody(),
+                ),
+              ],
+            ),
+
+            Gap(16),
             MainButton(
               height: 40,
               backgroundColor: Colors.red,
-              onTap: onDelete,
+              onTap: () async {
+                showLoadingDialog(context);
+                FireBaseService.deletePatientAppointment(
+                  documentID: widget.appointmentId,
+                ).then((value) {
+                  context.pop();
+                  return showAlertDialog(
+                    context,
+                    text: 'تم حذف الحجز بنجاح',
+                    type: DialogType.success,
+                    onTap: () {
+                      context.pop();
+                      setState(() {});
+                    },
+                  );
+                });
+              },
               text: 'حذف الحجز',
             ),
           ],

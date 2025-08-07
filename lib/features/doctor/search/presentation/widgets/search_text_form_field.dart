@@ -8,12 +8,10 @@ class SearchTextFormField extends StatelessWidget {
     required this.onPressed,
     this.controller,
     this.onFieldSubmitted,
-    required this.hintText,
   });
   final void Function()? onPressed;
   final TextEditingController? controller;
   final void Function(String)? onFieldSubmitted;
-  final String hintText;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,7 +27,7 @@ class SearchTextFormField extends StatelessWidget {
       child: MainTextFormField(
         onFieldSubmitted: onFieldSubmitted,
         controller: controller,
-        hintText: hintText,
+        hintText: 'ابحث عن دكتور',
         suffixIcon: IconButton(
           color: AppColors.whiteColor,
           style: IconButton.styleFrom(

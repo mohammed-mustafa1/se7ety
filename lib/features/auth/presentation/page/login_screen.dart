@@ -10,6 +10,7 @@ import 'package:se7ety/core/constants/app_assets.dart';
 import 'package:se7ety/core/extensions/navigation.dart';
 import 'package:se7ety/core/extensions/validation.dart';
 import 'package:se7ety/core/routers/app_routers.dart';
+import 'package:se7ety/core/services/shared_prefs.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
 import 'package:se7ety/features/auth/data/models/user_enum.dart';
@@ -45,8 +46,12 @@ class _LoginScreenState extends State<LoginScreen> {
         } else if (state is AuthSuccess) {
           context.pop();
           if (widget.userType == UserType.doctor) {
-            context.pushToBase(AppRouter.doctorRegister);
-          } else {}
+            context.pushToBase(AppRouter.mainScreen);
+            SharedPrefs.saveUserType(userType: UserType.doctor);
+          } else {
+            context.pushToBase(AppRouter.mainScreen);
+            SharedPrefs.saveUserType(userType: UserType.patient);
+          }
         }
       },
       builder: (context, state) {

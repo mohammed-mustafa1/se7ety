@@ -6,12 +6,13 @@ import 'package:se7ety/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:se7ety/features/auth/presentation/page/doctor_register_screen.dart';
 import 'package:se7ety/features/auth/presentation/page/login_screen.dart';
 import 'package:se7ety/features/auth/presentation/page/register_screen.dart';
-import 'package:se7ety/features/intro/profile/presentation/pages/edit_profile_screen.dart';
-import 'package:se7ety/features/intro/profile/presentation/pages/settings_screen.dart';
+import 'package:se7ety/features/profile/presentation/pages/doctor_edit_profile.dart';
+import 'package:se7ety/features/profile/presentation/pages/edit_profile_screen.dart';
+import 'package:se7ety/features/profile/presentation/pages/settings_screen.dart';
 import 'package:se7ety/features/patient/booking/presentation/page/booking_screen.dart';
 import 'package:se7ety/features/patient/home/presentation/pages/doctor_profile_screen.dart';
 import 'package:se7ety/features/patient/search/presentation/page/search_screen.dart';
-import 'package:se7ety/features/patient/main/main_screen.dart';
+import 'package:se7ety/features/main/main_screen.dart';
 import 'package:se7ety/features/intro/onboarding/presentation/page/on_boarding_screen.dart';
 import 'package:se7ety/features/intro/splash/page/splash_screen.dart';
 import 'package:se7ety/features/intro/welcome/welcome_screen.dart';
@@ -27,9 +28,9 @@ class AppRouter {
   static const String search = '/searchScreen';
   static const String doctorProfile = '/doctorProfileScreen';
   static const String bookAppointment = '/bookAppointmentScreen';
-
   static const String settings = '/settingsScreen';
   static const String editProfile = '/editProfile';
+  static const String doctorEditProfile = '/doctorEditProfileScreen';
 
   static final routers = GoRouter(
     routes: [
@@ -98,6 +99,12 @@ class AppRouter {
         path: editProfile,
         builder: (context, state) {
           return EditProfileScreen();
+        },
+      ),
+      GoRoute(
+        path: doctorEditProfile,
+        builder: (context, state) {
+          return DoctorEditProfileScreen();
         },
       ),
     ],

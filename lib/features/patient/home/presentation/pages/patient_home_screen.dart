@@ -72,6 +72,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
               ),
               Gap(16),
               SearchTextFormField(
+                hintText: 'ابحث عن دكتور',
                 onFieldSubmitted: (value) {
                   context.pushTo(
                     AppRouter.search,

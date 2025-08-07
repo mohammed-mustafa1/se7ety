@@ -12,8 +12,10 @@ import 'package:se7ety/components/inputs/main_dropdown_button_form_field.dart';
 import 'package:se7ety/components/inputs/main_text_form_field.dart';
 import 'package:se7ety/components/dialogs/main_dialog.dart';
 import 'package:se7ety/core/constants/specialization.dart';
+import 'package:se7ety/core/extensions/navigation.dart';
 import 'package:se7ety/core/extensions/theme.dart';
 import 'package:se7ety/core/function/show_bottom_sheet.dart';
+import 'package:se7ety/core/routers/app_routers.dart';
 import 'package:se7ety/core/services/shared_prefs.dart';
 import 'package:se7ety/core/services/upload_image.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
@@ -70,26 +72,39 @@ class _DoctorRegisterScreenState extends State<DoctorRegisterScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Center(
-                        child: Stack(
-                          children: [
-                            // ProfileImage(imageNetworkUrl: imageFile.path),
-                            Positioned(
-                              bottom: 0,
-                              child: CameraIconButton(
-                                onTap: () {
-                                  showPickImageBottomSheet(
-                                    context,
-                                    onTapCamera: () {
-                                      uploadImage(context, ImageSource.camera);
-                                    },
-                                    onTapGallery: () {
-                                      uploadImage(context, ImageSource.gallery);
-                                    },
-                                  );
-                                },
+                        child: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: Stack(
+                            children: [
+                              ProfileImage(
+                                imageNetworkUrl: imageFile.path,
+                                imageFile: imageFile,
                               ),
-                            ),
-                          ],
+                              Positioned(
+                                bottom: 0,
+                                child: CameraIconButton(
+                                  onTap: () {
+                                    showPickImageBottomSheet(
+                                      context,
+                                      onTapCamera: () {
+                                        uploadImage(
+                                          context,
+                                          ImageSource.camera,
+                                        );
+                                      },
+                                      onTapGallery: () {
+                                        uploadImage(
+                                          context,
+                                          ImageSource.gallery,
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       Text('التخصص', style: TextStyles.getBody()),
@@ -221,6 +236,7 @@ class _DoctorRegisterScreenState extends State<DoctorRegisterScreen> {
                             text: 'تمت عملية التسجيل بنجاح',
                             type: DialogType.success,
                           );
+                          context.pushToBase(AppRouter.mainScreen);
                         });
                   }
                 },

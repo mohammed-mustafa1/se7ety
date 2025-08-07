@@ -1,21 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:se7ety/components/custom_error_widget.dart';
-import 'package:se7ety/components/dialogs/main_dialog.dart';
 import 'package:se7ety/core/services/firebase_service.dart';
-import 'package:se7ety/features/patient/appointments/widgets/appointment_tile.dart';
+import 'package:se7ety/features/doctor/appointments/presentation/widgets/doctor_appointment_tile.dart';
 import 'package:se7ety/features/patient/appointments/widgets/empty_u_i.dart';
 import 'package:se7ety/features/patient/booking/data/model/appointment_model.dart';
 
-class AppointmentsScreen extends StatefulWidget {
-  const AppointmentsScreen({super.key});
+class DoctorAppointmentsScreen extends StatelessWidget {
+  const DoctorAppointmentsScreen({super.key});
 
-  @override
-  State<AppointmentsScreen> createState() => _AppointmentsScreenState();
-}
-
-class _AppointmentsScreenState extends State<AppointmentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,11 +18,12 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: FutureBuilder(
-          future: FireBaseService.getPatientAppointments(),
+          future: FireBaseService.getDoctorAppointments(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
+              log(snapshot.error.toString());
               return CustomErrorWidget(message: snapshot.error.toString());
             }
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -40,26 +36,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                   AppointmentModel appointment = AppointmentModel.fromJson(
                     snapshot.data!.docs[index].data() as Map<String, dynamic>,
                   );
-                  return AppointmentTile(
+                  return DoctorAppointmentTile(
                     appointment: appointment,
-                    // appointmentId: snapshot.data!.docs[index].id,
-                    onDelete: () async {
-                      showLoadingDialog(context);
-                      FireBaseService.deletePatientAppointment(
-                        documentID: snapshot.data!.docs[index].id,
-                      ).then((value) {
-                        context.pop();
-                        showAlertDialog(
-                          context,
-                          text: 'تم حذف الحجز بنجاح',
-                          type: DialogType.success,
-                          onTap: () {
-                            context.pop();
-                            setState(() {});
-                          },
-                        );
-                      });
-                    },
+                    appointmentId: snapshot.data!.docs[index].id,
                   );
                 },
               );

@@ -2,7 +2,7 @@ class PatientModel {
   String? userId;
   String? name;
   String? image;
-  String? age;
+  int? age;
   String? email;
   String? phone;
   String? bio;

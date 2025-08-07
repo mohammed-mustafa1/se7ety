@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
 
@@ -33,8 +34,14 @@ class EditProfileItem extends StatelessWidget {
         child: Row(
           children: [
             Text(title, style: TextStyles.getBody(fontWeight: FontWeight.bold)),
-            Spacer(),
-            Text(subtitle, style: TextStyles.getBody()),
+            Gap(16),
+            Expanded(
+              child: Text(
+                textAlign: TextAlign.end,
+                subtitle,
+                style: TextStyles.getBody(),
+              ),
+            ),
           ],
         ),
       ),

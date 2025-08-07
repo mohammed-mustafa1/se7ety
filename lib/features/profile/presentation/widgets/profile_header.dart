@@ -6,10 +6,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:se7ety/components/buttons/camera_icon_button.dart';
 import 'package:se7ety/core/function/show_bottom_sheet.dart';
 import 'package:se7ety/core/services/firebase_service.dart';
+import 'package:se7ety/core/services/shared_prefs.dart';
 import 'package:se7ety/core/services/upload_image.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
+import 'package:se7ety/features/auth/data/models/doctor_model.dart';
 import 'package:se7ety/features/auth/data/models/patient_model.dart';
+import 'package:se7ety/features/auth/data/models/user_enum.dart';
 import 'package:se7ety/features/auth/presentation/widgets/profile_image.dart';
 
 class ProfileHeaderSection extends StatefulWidget {
@@ -29,6 +32,7 @@ class ProfileHeaderSection extends StatefulWidget {
 
 class _ProfileHeaderSectionState extends State<ProfileHeaderSection> {
   File? localImageFile;
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -36,10 +40,16 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection> {
         Center(
           child: Stack(
             children: [
-              ProfileImage(
-                imageNetworkUrl: widget.imageUrl,
-                imageFile: localImageFile ?? File(''),
-              ),
+              isLoading
+                  ? SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: CircularProgressIndicator(),
+                  )
+                  : ProfileImage(
+                    imageNetworkUrl: widget.imageUrl,
+                    imageFile: localImageFile ?? File(''),
+                  ),
               Positioned(
                 bottom: 0,
                 child: CameraIconButton(
@@ -47,23 +57,15 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection> {
                     showPickImageBottomSheet(
                       context,
                       onTapCamera: () async {
-                        final file = await updatePatientImage(
-                          ImageSource.camera,
-                        );
+                        final file = await updateUserImage(ImageSource.camera);
                         if (file != null) {
                           localImageFile = file;
-                          context.pop();
-                          setState(() {});
                         }
                       },
                       onTapGallery: () async {
-                        final file = await updatePatientImage(
-                          ImageSource.gallery,
-                        );
+                        final file = await updateUserImage(ImageSource.gallery);
                         if (file != null) {
                           localImageFile = file;
-                          context.pop();
-                          setState(() {});
                         }
                       },
                     );
@@ -93,13 +95,24 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection> {
     );
   }
 
-  Future<File?> updatePatientImage(ImageSource source) async {
+  Future<File?> updateUserImage(ImageSource source) async {
     var imageFile = await UploadImageService.pickImage(source: source);
     if (imageFile != null) {
+      setState(() {
+        isLoading = true;
+      });
+      context.pop();
       await UploadImageService.uploadToImageKit(imageFile).then((value) {
-        FireBaseService.updatePatientData(
-          patientModel: PatientModel(image: value),
-        );
+        SharedPrefs.getUserType() == UserType.patient.name
+            ? FireBaseService.updatePatientData(
+              patientModel: PatientModel(image: value),
+            )
+            : FireBaseService.updateDoctorData(
+              doctorModel: DoctorModel(image: value),
+            );
+        setState(() {
+          isLoading = false;
+        });
       });
       return imageFile;
     }
