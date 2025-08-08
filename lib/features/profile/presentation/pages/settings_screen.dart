@@ -56,9 +56,10 @@ class SettingsScreen extends StatelessWidget {
               onTap: () async {
                 showLoadingDialog(context);
                 await FirebaseAuth.instance.signOut();
-                await SharedPrefs.clearAllData().then(
-                  (value) => context.pushToBase(AppRouter.welcome),
-                );
+                context.pushToBase(AppRouter.welcome);
+                await SharedPrefs.remove(SharedPrefs.kUserID);
+                await SharedPrefs.remove(SharedPrefs.kUserType);
+                await SharedPrefs.remove(SharedPrefs.kIsDataCompleted);
               },
               text: 'تسجيل الخروج',
               fontWeight: FontWeight.bold,

@@ -5,6 +5,7 @@ import 'package:se7ety/features/auth/data/models/user_enum.dart';
 import 'package:se7ety/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:se7ety/features/auth/presentation/page/doctor_register_screen.dart';
 import 'package:se7ety/features/auth/presentation/page/login_screen.dart';
+import 'package:se7ety/features/auth/presentation/page/patient_register_screen.dart';
 import 'package:se7ety/features/auth/presentation/page/register_screen.dart';
 import 'package:se7ety/features/profile/presentation/pages/doctor_edit_profile.dart';
 import 'package:se7ety/features/profile/presentation/pages/edit_profile_screen.dart';
@@ -24,6 +25,7 @@ class AppRouter {
   static const String register = '/register';
   static const String login = '/login';
   static const String doctorRegister = '/doctorRegister';
+  static const String patientRegister = '/patientRegister';
   static const String mainScreen = '/mainScreen';
   static const String search = '/searchScreen';
   static const String doctorProfile = '/doctorProfileScreen';
@@ -65,6 +67,17 @@ class AppRouter {
               child: BlocProvider(
                 create: (context) => AuthCubit(),
                 child: DoctorRegisterScreen(),
+              ),
+            ),
+      ),
+      GoRoute(
+        path: patientRegister,
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => AuthCubit(),
+              child: BlocProvider(
+                create: (context) => AuthCubit(),
+                child: PatientRegisterScreen(),
               ),
             ),
       ),

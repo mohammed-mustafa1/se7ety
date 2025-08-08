@@ -45,13 +45,15 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         } else if (state is AuthSuccess) {
           context.pop();
-          if (widget.userType == UserType.doctor) {
-            context.pushToBase(AppRouter.mainScreen);
-            SharedPrefs.saveUserType(userType: UserType.doctor);
-          } else {
-            context.pushToBase(AppRouter.mainScreen);
-            SharedPrefs.saveUserType(userType: UserType.patient);
-          }
+          SharedPrefs.isDataCompleted().then((isCompleted) {
+            if (isCompleted) {
+              context.pushToBase(AppRouter.mainScreen);
+            } else {
+              widget.userType == UserType.doctor
+                  ? context.pushToBase(AppRouter.doctorRegister)
+                  : context.pushToBase(AppRouter.patientRegister);
+            }
+          });
         }
       },
       builder: (context, state) {
@@ -133,6 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           if (formKey.currentState!.validate()) {
                             context.read<AuthCubit>().login(
+                              usertype: widget.userType,
                               emailAddress: _emailController.text,
                               password: _passwordController.text,
                             );

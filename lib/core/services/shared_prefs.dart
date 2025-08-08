@@ -8,6 +8,7 @@ class SharedPrefs {
   static const String kUserType = 'kUserType';
   static const String kThemeMode = 'kThemeMode';
   static const String kIsOnboardingView = 'kIsOnBoardingView';
+  static const String kIsDataCompleted = 'kIsDataCompleted';
   static Future<void> init() async {
     prefs = await SharedPreferences.getInstance();
   }
@@ -35,6 +36,14 @@ class SharedPrefs {
   static String getUserType() => getString(kUserType);
 
   static String getUserID() => getString(kUserID);
+
+  static Future<bool> isDataCompleted({bool? value}) async {
+    if (value == null) {
+      return prefs.getBool(kIsDataCompleted) ?? false;
+    } else {
+      return await prefs.setBool(kIsDataCompleted, value);
+    }
+  }
 
   static setTheme({required ThemeMode themeMode}) {
     setString(kThemeMode, themeMode.name);

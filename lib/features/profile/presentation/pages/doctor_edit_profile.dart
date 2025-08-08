@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:se7ety/components/buttons/main_button.dart';
 import 'package:se7ety/components/custom_error_widget.dart';
@@ -129,13 +130,14 @@ class _DoctorEditProfileScreenState extends State<DoctorEditProfileScreen> {
     required EditType editType,
   }) {
     TextEditingController controller = TextEditingController(text: content);
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
     String? editingValue;
     return showDialog(
       context: context,
       builder: (context) {
-        GlobalKey<FormState> formKey = GlobalKey<FormState>();
         return AlertDialog(
           shape: RoundedRectangleBorder(
+            side: BorderSide(color: AppColors.primaryColor, width: 2),
             borderRadius: BorderRadius.circular(16),
           ),
           title: Text(title, textAlign: TextAlign.center),
@@ -166,14 +168,13 @@ class _DoctorEditProfileScreenState extends State<DoctorEditProfileScreen> {
                       value: editingValue ?? specializations[0],
                       onChanged: (value) {
                         editingValue = value ?? specializations[0];
-                        setState(() {});
                       },
                     )
                     : TextFormField(
                       readOnly:
-                          editType != EditType.specialization ||
-                          editType != EditType.openHour ||
-                          editType != EditType.closeHour,
+                          editType == EditType.specialization ||
+                          editType == EditType.openHour ||
+                          editType == EditType.closeHour,
                       onTap: () {
                         editType == EditType.openHour ||
                                 editType == EditType.closeHour
@@ -201,7 +202,9 @@ class _DoctorEditProfileScreenState extends State<DoctorEditProfileScreen> {
                             : null;
                       },
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.trim().isEmpty) {
                           return 'الحقل مطلوب';
                         }
 
@@ -236,54 +239,68 @@ class _DoctorEditProfileScreenState extends State<DoctorEditProfileScreen> {
                     ),
           ),
           actions: [
-            MainButton(
-              height: 60,
-              onTap: () {
-                if (formKey.currentState!.validate() && editingValue != null) {
-                  if (editType == EditType.openHour) {
-                    if (DateTime.parse(
-                          editingValue!,
-                        ).isAfter(doctor!.closeHour!.toDate()) ||
-                        DateTime.parse(
-                          editingValue!,
-                        ).isAtSameMomentAs(doctor!.closeHour!.toDate())) {
-                      showMainSnackBar(
-                        context,
-                        text: 'وقت الفتح يجب ان يكون قبل وقت الاغلاق',
-                        type: DialogType.error,
-                      );
-                      return;
-                    }
-                  }
-                  if (editType == EditType.closeHour) {
-                    if (DateTime.parse(
-                          editingValue!,
-                        ).isBefore(doctor!.openHour!.toDate()) ||
-                        DateTime.parse(
-                          editingValue!,
-                        ).isAtSameMomentAs(doctor!.openHour!.toDate())) {
-                      showMainSnackBar(
-                        context,
-                        text: 'وقت الاغلاق يجب ان يكون بعد وقت الفتح',
-                        type: DialogType.error,
-                      );
-                      return;
-                    }
-                  }
-                  showLoadingDialog(context);
-                  updateUsereData(
-                    editType: editType,
-                    value: editingValue!,
-                  ).then((value) {
-                    context.pop();
-                    setState(() {});
-                  });
-                  context.pop();
-                } else {
-                  context.pop();
-                }
-              },
-              text: 'حفظ التعديل',
+            Row(
+              children: [
+                Expanded(
+                  child: MainButton(
+                    height: 45,
+                    onTap: () => context.pop(),
+                    text: 'الغاء',
+                    backgroundColor: Colors.red,
+                  ),
+                ),
+                Gap(16),
+                Expanded(
+                  child: MainButton(
+                    height: 45,
+                    onTap: () async {
+                      if (formKey.currentState!.validate() &&
+                          editingValue != null) {
+                        if (editType == EditType.openHour) {
+                          if (DateTime.parse(
+                                editingValue!,
+                              ).isAfter(doctor!.closeHour!.toDate()) ||
+                              DateTime.parse(
+                                editingValue!,
+                              ).isAtSameMomentAs(doctor!.closeHour!.toDate())) {
+                            showMainSnackBar(
+                              context,
+                              text: 'وقت الفتح يجب ان يكون قبل وقت الاغلاق',
+                              type: DialogType.error,
+                            );
+                            return;
+                          }
+                        }
+                        if (editType == EditType.closeHour) {
+                          if (DateTime.parse(
+                                editingValue!,
+                              ).isBefore(doctor!.openHour!.toDate()) ||
+                              DateTime.parse(
+                                editingValue!,
+                              ).isAtSameMomentAs(doctor!.openHour!.toDate())) {
+                            showMainSnackBar(
+                              context,
+                              text: 'وقت الاغلاق يجب ان يكون بعد وقت الفتح',
+                              type: DialogType.error,
+                            );
+                            return;
+                          }
+                        }
+                        showLoadingDialog(context);
+                        await updateUsereData(
+                          editType: editType,
+                          value: editingValue!,
+                        );
+                        setState(() {
+                          context.pop();
+                          context.pop();
+                        });
+                      }
+                    },
+                    text: 'حفظ التعديل',
+                  ),
+                ),
+              ],
             ),
           ],
         );

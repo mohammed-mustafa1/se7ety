@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:se7ety/core/services/firebase_service.dart';
+import 'package:se7ety/core/services/shared_prefs.dart';
 import 'package:se7ety/features/auth/data/models/user_enum.dart';
 import 'package:se7ety/features/auth/presentation/page/doctor_register_screen.dart';
 import 'package:se7ety/features/doctor/appointments/presentation/pages/doctor_appointments_screen.dart';
@@ -18,25 +18,10 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int selectedIndex = 0;
-  UserType? userType;
 
   @override
   void initState() {
     super.initState();
-    FireBaseService.getPatientData().then((value) {
-      if (value.exists) {
-        setState(() {
-          userType = UserType.patient;
-        });
-      }
-    });
-    FireBaseService.getDoctorData().then((value) {
-      if (value.exists) {
-        setState(() {
-          userType = UserType.doctor;
-        });
-      }
-    });
   }
 
   List<Widget> doctorScreens = [
@@ -58,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body:
-          userType == UserType.doctor
+          SharedPrefs.getUserType() == UserType.doctor.name
               ? doctorScreens[selectedIndex]
               : patientscreens[selectedIndex],
       bottomNavigationBar: MainNavBar(

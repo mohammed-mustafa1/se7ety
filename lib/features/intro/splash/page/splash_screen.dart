@@ -3,6 +3,7 @@ import 'package:se7ety/core/constants/app_assets.dart';
 import 'package:se7ety/core/extensions/navigation.dart';
 import 'package:se7ety/core/routers/app_routers.dart';
 import 'package:se7ety/core/services/shared_prefs.dart';
+import 'package:se7ety/features/auth/data/models/user_enum.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
     bool isLogedIn = SharedPrefs.getUserID().isNotEmpty;
     Future.delayed(Duration(seconds: 3)).then((value) {
       if (isLogedIn) {
-        context.pushToReplace(AppRouter.mainScreen);
+        checkUserDataCompleted();
       } else {
         SharedPrefs.isOnBoardingView
             ? context.pushToReplace(AppRouter.onBoarding)
@@ -32,5 +33,20 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Center(child: Image.asset(AppAssets.logo, width: 250)),
     );
+  }
+
+  Future<void> checkUserDataCompleted() async {
+    bool isCompleted = await SharedPrefs.isDataCompleted();
+    if (isCompleted) {
+      context.pushTo(AppRouter.mainScreen);
+    } else {
+      if (SharedPrefs.getUserType().isNotEmpty) {
+        SharedPrefs.getUserType() == UserType.doctor.name
+            ? context.pushTo(AppRouter.doctorRegister)
+            : context.pushTo(AppRouter.patientRegister);
+      } else {
+        context.pushToBase(AppRouter.welcome);
+      }
+    }
   }
 }

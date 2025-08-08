@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -12,6 +10,7 @@ import 'package:se7ety/core/constants/app_assets.dart';
 import 'package:se7ety/core/extensions/navigation.dart';
 import 'package:se7ety/core/extensions/validation.dart';
 import 'package:se7ety/core/routers/app_routers.dart';
+import 'package:se7ety/core/services/shared_prefs.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
 import 'package:se7ety/features/auth/data/models/user_enum.dart';
@@ -47,22 +46,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
           );
         } else if (state is AuthSuccess) {
           context.pop();
-
-          if (widget.userType == UserType.doctor) {
-            showMainSnackBar(
-              context,
-              text: 'تم التسجيل بنجاح يرجي اكمال البيانات الشخصية',
-              type: DialogType.success,
-            );
-            context.pushToBase(AppRouter.doctorRegister);
-          } else {
-            showMainSnackBar(
-              context,
-              text: 'تم التسجيل بنجاح',
-              type: DialogType.success,
-            );
-            context.pushToBase(AppRouter.mainScreen);
-          }
+          SharedPrefs.isDataCompleted().then((isCompleted) {
+            if (isCompleted) {
+              context.pushToBase(AppRouter.mainScreen);
+            } else {
+              widget.userType == UserType.doctor
+                  ? context.pushToBase(AppRouter.doctorRegister)
+                  : context.pushToBase(AppRouter.patientRegister);
+            }
+          });
         }
       },
       builder: (context, state) {
@@ -154,7 +146,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       MainButton(
                         onTap: () {
                           if (formKey.currentState!.validate()) {
-                            log('Success');
                             context.read<AuthCubit>().register(
                               name: _nameController.text.toLowerCase(),
                               userType: widget.userType,
