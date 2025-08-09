@@ -18,7 +18,7 @@ class TopCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        constraints: BoxConstraints(minHeight: 100, maxHeight: 140),
+        constraints: BoxConstraints(minHeight: 100, maxHeight: 150),
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),

@@ -297,7 +297,7 @@ class _DoctorEditProfileScreenState extends State<DoctorEditProfileScreen> {
                         });
                       }
                     },
-                    text: 'حفظ التعديل',
+                    text: 'حفظ',
                   ),
                 ),
               ],

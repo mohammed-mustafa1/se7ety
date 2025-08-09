@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:se7ety/components/buttons/main_button.dart';
 import 'package:se7ety/components/custom_error_widget.dart';
@@ -143,22 +144,37 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             controller: controller,
           ),
           actions: [
-            MainButton(
-              height: 60,
-              onTap: () {
-                if (editingValue != null) {
-                  showLoadingDialog(context);
-                  updateProfileData(
-                    editType: editType,
-                    value: editingValue!,
-                  ).then((value) {
-                    context.pop();
-                    setState(() {});
-                  });
-                }
-                context.pop();
-              },
-              text: 'حفظ التعديل',
+            Row(
+              children: [
+                Expanded(
+                  child: MainButton(
+                    height: 45,
+                    onTap: () => context.pop(),
+                    text: 'الغاء',
+                    backgroundColor: Colors.red,
+                  ),
+                ),
+                Gap(16),
+                Expanded(
+                  child: MainButton(
+                    height: 45,
+                    onTap: () {
+                      if (editingValue != null) {
+                        showLoadingDialog(context);
+                        updateProfileData(
+                          editType: editType,
+                          value: editingValue!,
+                        ).then((value) {
+                          context.pop();
+                          setState(() {});
+                        });
+                      }
+                      context.pop();
+                    },
+                    text: 'حفظ',
+                  ),
+                ),
+              ],
             ),
           ],
         );
