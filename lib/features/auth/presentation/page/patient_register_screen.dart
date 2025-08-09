@@ -125,7 +125,7 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
                                     : null,
                         maxLines: 5,
                         hintText:
-                            'سجل المعلومات الطبية مثل تعليمك الأكاديمي وخبراتك السابقة...',
+                            'من فضلك ادخل نبذة تعريفية للمريض للمساعدة في التواصل معه',
                       ),
                       Divider(
                         indent: 16,

@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> checkUserDataCompleted() async {
     bool isCompleted = await SharedPrefs.isDataCompleted();
     if (isCompleted) {
-      context.pushTo(AppRouter.mainScreen);
+      context.pushToBase(AppRouter.mainScreen);
     } else {
       if (SharedPrefs.getUserType().isNotEmpty) {
         SharedPrefs.getUserType() == UserType.doctor.name

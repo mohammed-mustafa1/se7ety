@@ -7,6 +7,7 @@ import 'package:se7ety/features/auth/presentation/page/doctor_register_screen.da
 import 'package:se7ety/features/auth/presentation/page/login_screen.dart';
 import 'package:se7ety/features/auth/presentation/page/patient_register_screen.dart';
 import 'package:se7ety/features/auth/presentation/page/register_screen.dart';
+import 'package:se7ety/features/doctor/search/presentation/page/patient_search_screen.dart';
 import 'package:se7ety/features/profile/presentation/pages/doctor_edit_profile.dart';
 import 'package:se7ety/features/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:se7ety/features/profile/presentation/pages/settings_screen.dart';
@@ -28,6 +29,7 @@ class AppRouter {
   static const String patientRegister = '/patientRegister';
   static const String mainScreen = '/mainScreen';
   static const String search = '/searchScreen';
+  static const String patientSearch = '/patientSearchScreen';
   static const String doctorProfile = '/doctorProfileScreen';
   static const String bookAppointment = '/bookAppointmentScreen';
   static const String settings = '/settingsScreen';
@@ -88,6 +90,12 @@ class AppRouter {
           String keyword = st[0] as String;
           var searchType = st[1] as SearchType;
           return SearchScreen(keyword: keyword, searchType: searchType);
+        },
+      ),
+      GoRoute(
+        path: patientSearch,
+        builder: (context, state) {
+          return PatientSearchScreen(keyword: state.extra as String);
         },
       ),
       GoRoute(

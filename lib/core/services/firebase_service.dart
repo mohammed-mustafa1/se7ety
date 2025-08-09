@@ -126,6 +126,26 @@ class FireBaseService {
         .get();
   }
 
+  static Future<QuerySnapshot<Object?>> getTodayDoctorAppointments() async {
+    DateTime today = DateTime.now();
+    return await _appointmentsCollection
+        .where('doctorId', isEqualTo: SharedPrefs.getUserID())
+        .where(
+          'time',
+          isGreaterThanOrEqualTo: Timestamp.fromDate(
+            DateTime(today.year, today.month, today.day),
+          ),
+        )
+        .where(
+          'time',
+          isLessThan: Timestamp.fromDate(
+            DateTime(today.year, today.month, today.day + 1),
+          ),
+        )
+        .orderBy('time', descending: false)
+        .get();
+  }
+
   static Future<void> deletePatientAppointment({
     required String documentID,
   }) async {
