@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:se7ety/core/constants/specialization.dart';
 import 'package:se7ety/core/extensions/navigation.dart';
@@ -7,26 +7,14 @@ import 'package:se7ety/core/extensions/theme.dart';
 import 'package:se7ety/core/routers/app_routers.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
+import 'package:se7ety/features/doctor/home/presentation/cubit/home_cubit/home_cubit.dart';
 import 'package:se7ety/features/patient/search/presentation/page/search_screen.dart';
 import 'package:se7ety/features/patient/search/presentation/widgets/search_text_form_field.dart';
 import 'package:se7ety/features/patient/home/presentation/widgets/specialization_list_view.dart';
 import 'package:se7ety/features/patient/home/presentation/widgets/top_rated_doctor_list_view.dart';
 
-class PatientHomeScreen extends StatefulWidget {
+class PatientHomeScreen extends StatelessWidget {
   const PatientHomeScreen({super.key});
-
-  @override
-  State<PatientHomeScreen> createState() => _PatientHomeScreenState();
-}
-
-class _PatientHomeScreenState extends State<PatientHomeScreen> {
-  User? user;
-  TextEditingController searchController = TextEditingController();
-  @override
-  void initState() {
-    user = FirebaseAuth.instance.currentUser;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +45,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                 children: [
                   Text('مرحبا, ', style: TextStyles.getTitle()),
                   Text(
-                    user?.displayName ?? '',
+                    context.read<HomeCubit>().user.displayName ?? '',
                     style: TextStyles.getTitle(
                       color: AppColors.primaryColor,
                       fontWeight: FontWeight.bold,
@@ -76,14 +64,20 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                 onFieldSubmitted: (value) {
                   context.pushTo(
                     AppRouter.search,
-                    extra: [searchController.text, SearchType.name],
+                    extra: [
+                      context.read<HomeCubit>().searchController.text,
+                      SearchType.name,
+                    ],
                   );
                 },
-                controller: searchController,
+                controller: context.read<HomeCubit>().searchController,
                 onPressed: () {
                   context.pushTo(
                     AppRouter.search,
-                    extra: [searchController.text, SearchType.name],
+                    extra: [
+                      context.read<HomeCubit>().searchController.text,
+                      SearchType.name,
+                    ],
                   );
                 },
               ),

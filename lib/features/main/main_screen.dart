@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:se7ety/core/services/shared_prefs.dart';
 import 'package:se7ety/features/auth/data/models/user_enum.dart';
-import 'package:se7ety/features/auth/presentation/page/doctor_register_screen.dart';
 import 'package:se7ety/features/doctor/appointments/presentation/pages/doctor_appointments_screen.dart';
-import 'package:se7ety/features/doctor/search/presentation/page/search_screen.dart';
+import 'package:se7ety/features/doctor/home/presentation/cubit/home_cubit/home_cubit.dart';
+import 'package:se7ety/features/doctor/home/presentation/pages/doctor_home_screen.dart';
+import 'package:se7ety/features/doctor/search/presentation/page/patient_search_screen.dart';
 import 'package:se7ety/features/profile/presentation/pages/user_profile_screen.dart';
 import 'package:se7ety/features/patient/appointments/pages/appointments_screen.dart';
 import 'package:se7ety/features/patient/home/presentation/pages/patient_home_screen.dart';
@@ -25,18 +27,27 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   List<Widget> doctorScreens = [
-    PatientHomeScreen(),
-    DoctorSearchScreen(),
+    BlocProvider(
+      create:
+          (context) =>
+              HomeCubit()
+                ..getPatients()
+                ..getTodayDoctorAppointments()
+                ..getAllAppointmentsForDoctor(),
+      child: DoctorHomeScreen(),
+    ),
+    PatientSearchScreen(),
     DoctorAppointmentsScreen(),
     UserProfileScreen(userType: UserType.doctor),
-    DoctorRegisterScreen(),
   ];
   List<Widget> patientscreens = [
-    PatientHomeScreen(),
+    BlocProvider(
+      create: (context) => HomeCubit()..getTopRatedDoctors(),
+      child: PatientHomeScreen(),
+    ),
     SearchScreen(),
     AppointmentsScreen(),
     UserProfileScreen(userType: UserType.patient),
-    DoctorRegisterScreen(),
   ];
 
   @override

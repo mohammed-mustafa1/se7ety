@@ -13,7 +13,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   TextEditingController searchController = TextEditingController();
   User user = FirebaseAuth.instance.currentUser!;
-  List<DoctorModel> doctors = [];
+  List<DoctorModel> topRatedDoctors = [];
   List<AppointmentModel> allAppointments = [];
   List<AppointmentModel> todayAppointments = [];
   List<PatientModel> patients = [];
@@ -33,7 +33,7 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  Future<void> getAllAppointments() async {
+  Future<void> getAllAppointmentsForDoctor() async {
     emit(HomeLoading());
     try {
       final value = await FireBaseService.getDoctorAppointments();
@@ -42,6 +42,20 @@ class HomeCubit extends Cubit<HomeState> {
             return AppointmentModel.fromJson(
               appointment.data() as Map<String, dynamic>,
             );
+          }).toList();
+      emit(HomeSuccess());
+    } catch (e) {
+      emit(HomeError(e.toString()));
+    }
+  }
+
+  Future<void> getTopRatedDoctors() async {
+    emit(HomeLoading());
+    try {
+      final value = await FireBaseService.getTopRatedDoctors();
+      topRatedDoctors =
+          value.docs.map((doctor) {
+            return DoctorModel.fromJson(doctor.data() as Map<String, dynamic>);
           }).toList();
       emit(HomeSuccess());
     } catch (e) {

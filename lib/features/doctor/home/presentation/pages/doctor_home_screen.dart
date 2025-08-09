@@ -35,61 +35,52 @@ class DoctorHomeScreen extends StatelessWidget {
         foregroundColor: AppColors.darkColor,
         centerTitle: true,
       ),
-      body: BlocProvider(
-        create:
-            (context) =>
-                HomeCubit()
-                  ..getPatients()
-                  ..getTodayDoctorAppointments()
-                  ..getAllAppointments(),
-
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HeaderSection(),
-                Gap(16),
-                SearchTextFormField(
-                  hintText: 'ابحث عن مريض',
-                  onFieldSubmitted: (value) {
-                    context.pushTo(
-                      AppRouter.patientSearch,
-                      extra: context.read<HomeCubit>().searchController.text,
-                    );
-                  },
-                  controller: context.read<HomeCubit>().searchController,
-                  onPressed: () {
-                    context.pushTo(
-                      AppRouter.patientSearch,
-                      extra: context.read<HomeCubit>().searchController.text,
-                    );
-                  },
-                ),
-                Gap(24),
-                TopCards(),
-                Gap(16),
-                Text(
-                  '📌 لا تنس مراجعة مواعيد اليوم',
-                  style: TextStyles.getTitle(fontWeight: FontWeight.bold),
-                ),
-                Gap(16),
-                Text(
-                  'حجوزات اليوم',
-                  style: TextStyles.getTitle(fontWeight: FontWeight.bold),
-                ),
-                Gap(16),
-                TodayAppointments(),
-                Gap(16),
-                Text(
-                  ' المرضى الجدد',
-                  style: TextStyles.getTitle(fontWeight: FontWeight.bold),
-                ),
-                Gap(16),
-                NewPatientsSection(),
-              ],
-            ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HeaderSection(),
+              Gap(16),
+              SearchTextFormField(
+                hintText: 'ابحث عن مريض',
+                onFieldSubmitted: (value) {
+                  context.pushTo(
+                    AppRouter.patientSearch,
+                    extra: context.read<HomeCubit>().searchController.text,
+                  );
+                },
+                controller: context.read<HomeCubit>().searchController,
+                onPressed: () {
+                  context.pushTo(
+                    AppRouter.patientSearch,
+                    extra: context.read<HomeCubit>().searchController.text,
+                  );
+                },
+              ),
+              Gap(24),
+              TopCards(),
+              Gap(16),
+              Text(
+                '📌 لا تنس مراجعة مواعيد اليوم',
+                style: TextStyles.getTitle(fontWeight: FontWeight.bold),
+              ),
+              Gap(16),
+              Text(
+                'حجوزات اليوم',
+                style: TextStyles.getTitle(fontWeight: FontWeight.bold),
+              ),
+              Gap(16),
+              TodayAppointments(),
+              Gap(16),
+              Text(
+                ' المرضى الجدد',
+                style: TextStyles.getTitle(fontWeight: FontWeight.bold),
+              ),
+              Gap(16),
+              NewPatientsSection(),
+            ],
           ),
         ),
       ),

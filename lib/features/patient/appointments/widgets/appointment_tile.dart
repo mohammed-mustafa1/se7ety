@@ -93,7 +93,6 @@ class AppointmentTile extends StatelessWidget {
               ),
             ],
           ),
-          initiallyExpanded: true,
           children: [
             Row(
               spacing: 16,
