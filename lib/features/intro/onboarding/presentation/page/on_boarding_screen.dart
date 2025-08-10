@@ -43,7 +43,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-
+        toolbarHeight: kToolbarHeight,
         actions: [
           Visibility(
             visible: activIndex < onBoardingList.length - 1,

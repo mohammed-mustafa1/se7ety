@@ -5,7 +5,6 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:se7ety/components/buttons/main_button.dart';
 import 'package:se7ety/components/custom_error_widget.dart';
-import 'package:se7ety/components/dialogs/main_dialog.dart';
 import 'package:se7ety/core/extensions/theme.dart';
 import 'package:se7ety/core/services/firebase_service.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
@@ -174,18 +173,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       Gap(16),
                       Expanded(
                         child: MainButton(
-                          onTap: () {
+                          onTap: () async {
                             if (editingValue != null) {
-                              showLoadingDialog(context);
-                              updateProfileData(
+                              await updateProfileData(
                                 editType: editType,
                                 value: editingValue!,
-                              ).then((value) {
-                                context.pop();
-                                setState(() {});
-                              });
-                            } else {
+                              );
                               context.pop();
+                              setState(() {});
                             }
                           },
                           text: 'حفظ',
