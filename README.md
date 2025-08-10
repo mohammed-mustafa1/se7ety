@@ -1,16 +1,39 @@
-# se7ety
 
-A new Flutter project.
+#  Se7ety
 
-## Getting Started
+**Se7ety** is a medical appointment management app that connects doctors and  patients in an easy and organized way.  
+The app uses Cubit  for state management and firebase firestore to store datata and ImageKit for image uploading.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## 🚀 Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 👨‍⚕️ Doctor Features
+- View total bookings, today's bookings, and total patientsn in a dashboard view.
+- View upcoming and past appointments.
+- Search  patients.
+- Upload profile photo to ImageKit.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 👤 Patient Features
+- View personal profile.
+- View upcoming and past appointments.
+- View the top rated doctors
+- search for a doctor using name or view doctors by specialty.
+- See doctor details and clinic information.
+- Upload personal photo to ImageKit.
+
+---
+
+## 🛠️ Tech Stack
+- **Flutter** (UI Framework)
+- **Cubit** (State Management)
+- **Firebase Firestore** (Database)
+- **Firebase Auth** (Authentication)
+- **ImageKit** (Image Uploads)
+
+---
+
+
+
+
+
