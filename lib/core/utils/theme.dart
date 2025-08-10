@@ -4,10 +4,15 @@ import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/text_styles.dart';
 
 class AppTheme {
-  static ThemeData lightTheme = ThemeData(
+  static ThemeData lightTheme(context) => ThemeData(
     brightness: Brightness.light,
     fontFamily: AppFonts.cairo,
     appBarTheme: AppBarTheme(
+      toolbarHeight:
+          MediaQuery.orientationOf(context) == Orientation.landscape
+              ? 0
+              : kToolbarHeight,
+
       centerTitle: true,
       backgroundColor: AppColors.primaryColor,
       foregroundColor: AppColors.whiteColor,

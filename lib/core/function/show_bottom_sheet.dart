@@ -16,9 +16,9 @@ showPickImageBottomSheet(
           children: [
             Text('اختر صورة', style: TextStyles.getBody()),
             Gap(20),
-            MainButton(text: 'المعرض', onTap: onTapGallery),
+            Flexible(child: MainButton(text: 'المعرض', onTap: onTapGallery)),
             Gap(20),
-            MainButton(text: 'الكاميرا', onTap: onTapCamera),
+            Flexible(child: MainButton(text: 'الكاميرا', onTap: onTapCamera)),
           ],
         ),
       ),

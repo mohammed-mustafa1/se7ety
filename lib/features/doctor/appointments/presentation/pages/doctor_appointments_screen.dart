@@ -2,15 +2,22 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:se7ety/components/custom_error_widget.dart';
 import 'package:se7ety/core/services/firebase_service.dart';
 import 'package:se7ety/features/doctor/appointments/presentation/widgets/doctor_appointment_tile.dart';
 import 'package:se7ety/features/patient/appointments/widgets/empty_u_i.dart';
 import 'package:se7ety/features/patient/booking/data/model/appointment_model.dart';
 
-class DoctorAppointmentsScreen extends StatelessWidget {
+class DoctorAppointmentsScreen extends StatefulWidget {
   const DoctorAppointmentsScreen({super.key});
 
+  @override
+  State<DoctorAppointmentsScreen> createState() =>
+      _DoctorAppointmentsScreenState();
+}
+
+class _DoctorAppointmentsScreenState extends State<DoctorAppointmentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +46,10 @@ class DoctorAppointmentsScreen extends StatelessWidget {
                   return DoctorAppointmentTile(
                     appointment: appointment,
                     appointmentId: snapshot.data!.docs[index].id,
+                    onDelete: () {
+                      context.pop();
+                      setState(() {});
+                    },
                   );
                 },
               );

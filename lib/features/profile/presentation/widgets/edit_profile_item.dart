@@ -32,16 +32,11 @@ class EditProfileItem extends StatelessWidget {
           ],
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(title, style: TextStyles.getBody(fontWeight: FontWeight.bold)),
             Gap(16),
-            Expanded(
-              child: Text(
-                textAlign: TextAlign.end,
-                subtitle,
-                style: TextStyles.getBody(),
-              ),
-            ),
+            Flexible(child: Text(subtitle, style: TextStyles.getBody())),
           ],
         ),
       ),

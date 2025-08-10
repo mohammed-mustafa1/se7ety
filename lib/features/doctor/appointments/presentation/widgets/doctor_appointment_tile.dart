@@ -14,9 +14,11 @@ class DoctorAppointmentTile extends StatefulWidget {
     super.key,
     required this.appointment,
     required this.appointmentId,
+    required this.onDelete,
   });
   final AppointmentModel appointment;
   final String appointmentId;
+  final void Function() onDelete;
   @override
   State<DoctorAppointmentTile> createState() => _DoctorAppointmentTileState();
 }
@@ -162,10 +164,7 @@ class _DoctorAppointmentTileState extends State<DoctorAppointmentTile> {
                     context,
                     text: 'تم حذف الحجز بنجاح',
                     type: DialogType.success,
-                    onTap: () {
-                      context.pop();
-                      setState(() {});
-                    },
+                    onTap: widget.onDelete,
                   );
                 });
               },

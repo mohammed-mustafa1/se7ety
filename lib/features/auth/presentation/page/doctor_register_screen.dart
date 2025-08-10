@@ -48,6 +48,7 @@ class _DoctorRegisterScreenState extends State<DoctorRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -68,6 +69,8 @@ class _DoctorRegisterScreenState extends State<DoctorRegisterScreen> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                   child: Column(
                     spacing: 16,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,47 +209,49 @@ class _DoctorRegisterScreenState extends State<DoctorRegisterScreen> {
                   ),
                 ),
               ),
-              Gap(22),
-              MainButton(
-                onTap: () async {
-                  if (formKey.currentState!.validate()) {
-                    showLoadingDialog(context);
-                    String imageUrl = await UploadImageService.uploadToImageKit(
-                      imageFile,
-                    );
-                    await context
-                        .read<AuthCubit>()
-                        .registerDoctorData(
-                          doctorModel: DoctorModel(
-                            userId: SharedPrefs.getUserID(),
-                            address: addressController.text,
-                            phone1: phoneController1.text,
-                            phone2: phoneController2.text,
-                            specialization: specialization,
-                            bio: bioController.text,
-                            openHour: openTime,
-                            closeHour: closeTime,
-                            image: imageUrl,
-                            rating: Random().nextInt(5) + 1,
-                          ),
-                        )
-                        .then((value) {
-                          context.pop();
-                          showMainSnackBar(
-                            context,
-                            text: 'تمت عملية التسجيل بنجاح',
-                            type: DialogType.success,
-                          );
-                          context.pushToBase(AppRouter.mainScreen);
-                        });
-                  }
-                },
-                text: 'التسجيل',
-                fontWeight: FontWeight.bold,
-                radius: 10,
-              ),
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16),
+        child: MainButton(
+          onTap: () async {
+            if (formKey.currentState!.validate()) {
+              showLoadingDialog(context);
+              String imageUrl = await UploadImageService.uploadToImageKit(
+                imageFile,
+              );
+              await context
+                  .read<AuthCubit>()
+                  .registerDoctorData(
+                    doctorModel: DoctorModel(
+                      userId: SharedPrefs.getUserID(),
+                      address: addressController.text,
+                      phone1: phoneController1.text,
+                      phone2: phoneController2.text,
+                      specialization: specialization,
+                      bio: bioController.text,
+                      openHour: openTime,
+                      closeHour: closeTime,
+                      image: imageUrl,
+                      rating: Random().nextInt(5) + 1,
+                    ),
+                  )
+                  .then((value) {
+                    context.pop();
+                    showMainSnackBar(
+                      context,
+                      text: 'تمت عملية التسجيل بنجاح',
+                      type: DialogType.success,
+                    );
+                    context.pushToBase(AppRouter.mainScreen);
+                  });
+            }
+          },
+          text: 'التسجيل',
+          fontWeight: FontWeight.bold,
+          radius: 10,
         ),
       ),
     );

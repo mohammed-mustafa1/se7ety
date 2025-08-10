@@ -12,7 +12,6 @@ class PatientCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(

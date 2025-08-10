@@ -13,7 +13,7 @@ class EmptyUI extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(AppAssets.noScheduled, height: 250),
+          Flexible(child: SvgPicture.asset(AppAssets.noScheduled, height: 250)),
           Text('لا يوجد حجوزات قادمه', style: TextStyles.getBody()),
         ],
       ),

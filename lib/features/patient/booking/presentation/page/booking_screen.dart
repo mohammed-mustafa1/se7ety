@@ -60,6 +60,7 @@ class _BookingScreenState extends State<BookingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(title: Text('احجز مع دكتورك')),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -67,6 +68,8 @@ class _BookingScreenState extends State<BookingScreen> {
           children: [
             Expanded(
               child: SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 physics: BouncingScrollPhysics(),
                 child: Form(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -213,51 +216,50 @@ class _BookingScreenState extends State<BookingScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: MainButton(
-                onTap: () async {
-                  if (formKey.currentState!.validate() &&
-                      selectedDate.hour == 0) {
-                    showMainSnackBar(
-                      context,
-                      text: 'من فضلك اختر وقت الحجز',
-                      type: DialogType.error,
-                    );
-                  } else if (formKey.currentState!.validate() &&
-                      selectedDate.hour != 0) {
-                    showLoadingDialog(context);
-                    await FireBaseService.createAppointment(
-                      appointmentModel: AppointmentModel(
-                        patientId: SharedPrefs.getUserID(),
-                        doctorId: widget.doctor.userId,
-                        patientName: nameController.text,
-                        phone: phoneController.text,
-                        description: descriptionController.text,
-                        doctorName: widget.doctor.name,
-                        location: widget.doctor.address,
-                        date: Timestamp.fromDate(selectedDate),
-                        isComplete: false,
-                        rating: null,
-                        patientAge: int.parse(ageController.text),
-                      ),
-                    ).then((value) {
-                      showAlertDialog(
-                        context,
-                        text: 'تم الحجز بنجاح',
-                        type: DialogType.success,
-                        onTap: () {
-                          context.pushToBase(AppRouter.mainScreen);
-                        },
-                      );
-                    });
-                  }
-                },
-                text: 'تأكيد الحجز',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(20),
+        child: MainButton(
+          onTap: () async {
+            if (formKey.currentState!.validate() && selectedDate.hour == 0) {
+              showMainSnackBar(
+                context,
+                text: 'من فضلك اختر وقت الحجز',
+                type: DialogType.error,
+              );
+            } else if (formKey.currentState!.validate() &&
+                selectedDate.hour != 0) {
+              showLoadingDialog(context);
+              await FireBaseService.createAppointment(
+                appointmentModel: AppointmentModel(
+                  patientId: SharedPrefs.getUserID(),
+                  doctorId: widget.doctor.userId,
+                  patientName: nameController.text,
+                  phone: phoneController.text,
+                  description: descriptionController.text,
+                  doctorName: widget.doctor.name,
+                  location: widget.doctor.address,
+                  date: Timestamp.fromDate(selectedDate),
+                  isComplete: false,
+                  rating: null,
+                  patientAge: int.parse(ageController.text),
+                ),
+              ).then((value) {
+                showAlertDialog(
+                  context,
+                  text: 'تم الحجز بنجاح',
+                  type: DialogType.success,
+                  onTap: () {
+                    context.pushToBase(AppRouter.mainScreen);
+                  },
+                );
+              });
+            }
+          },
+          text: 'تأكيد الحجز',
+          fontWeight: FontWeight.bold,
         ),
       ),
     );

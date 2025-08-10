@@ -18,14 +18,14 @@ class TopCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        constraints: BoxConstraints(minHeight: 100, maxHeight: 140),
+        constraints: BoxConstraints(minHeight: 100, maxHeight: 150),
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: backgroundColor.withValues(alpha: 0.8),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           spacing: 8,
           children: [

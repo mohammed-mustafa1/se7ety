@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:se7ety/components/buttons/main_button.dart';
 import 'package:se7ety/components/custom_error_widget.dart';
@@ -105,62 +106,98 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }) {
     TextEditingController controller = TextEditingController(text: content);
     String? editingValue;
-    return showDialog(
+    return showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
       builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          title: Text(title, textAlign: TextAlign.center),
-          titleTextStyle: TextStyles.getTitle(
-            color:
-                context.brightness == Brightness.light
-                    ? AppColors.darkColor
-                    : AppColors.whiteColor,
-
-            fontWeight: FontWeight.bold,
-          ),
-          content: TextField(
-            maxLines: null,
-            maxLength: editType == EditType.phone ? 11 : null,
-            inputFormatters:
-                editType == EditType.age || editType == EditType.phone
-                    ? [
-                      FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                      FilteringTextInputFormatter.digitsOnly,
-                    ]
-                    : [],
-            keyboardType:
-                editType == EditType.age || editType == EditType.phone
-                    ? TextInputType.number
-                    : TextInputType.text,
-            onChanged: (value) {
-              editingValue = value;
-            },
-            decoration: InputDecoration(filled: true),
-            style: TextStyles.getSmall(fontWeight: FontWeight.bold),
-            controller: controller,
-          ),
-          actions: [
-            MainButton(
-              height: 60,
-              onTap: () {
-                if (editingValue != null) {
-                  showLoadingDialog(context);
-                  updateProfileData(
-                    editType: editType,
-                    value: editingValue!,
-                  ).then((value) {
-                    context.pop();
-                    setState(() {});
-                  });
-                }
-                context.pop();
-              },
-              text: 'حفظ التعديل',
+        return PopScope(
+          canPop: false,
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+              left: 20,
+              right: 20,
+              top: 20,
             ),
-          ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: TextStyles.getTitle(
+                      color:
+                          context.brightness == Brightness.light
+                              ? AppColors.darkColor
+                              : AppColors.whiteColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Gap(16),
+                  TextField(
+                    maxLines: null,
+                    maxLength: editType == EditType.phone ? 11 : null,
+                    inputFormatters:
+                        editType == EditType.age || editType == EditType.phone
+                            ? [
+                              FilteringTextInputFormatter.allow(
+                                RegExp('[0-9]'),
+                              ),
+                              FilteringTextInputFormatter.digitsOnly,
+                            ]
+                            : [],
+                    keyboardType:
+                        editType == EditType.age || editType == EditType.phone
+                            ? TextInputType.number
+                            : TextInputType.text,
+                    onChanged: (value) {
+                      editingValue = value;
+                    },
+                    decoration: InputDecoration(filled: true),
+                    style: TextStyles.getSmall(fontWeight: FontWeight.bold),
+                    controller: controller,
+                  ),
+                  Gap(16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: MainButton(
+                          onTap: () => context.pop(),
+                          text: 'الغاء',
+                          backgroundColor: Colors.red,
+                        ),
+                      ),
+                      Gap(16),
+                      Expanded(
+                        child: MainButton(
+                          onTap: () {
+                            if (editingValue != null) {
+                              showLoadingDialog(context);
+                              updateProfileData(
+                                editType: editType,
+                                value: editingValue!,
+                              ).then((value) {
+                                context.pop();
+                                setState(() {});
+                              });
+                            } else {
+                              context.pop();
+                            }
+                          },
+                          text: 'حفظ',
+                        ),
+                      ),
+                    ],
+                  ),
+                  Gap(16),
+                ],
+              ),
+            ),
+          ),
         );
       },
     );

@@ -26,6 +26,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: kToolbarHeight,
         actions: [
           IconButton(
             onPressed: () {

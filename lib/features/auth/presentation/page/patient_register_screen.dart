@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:se7ety/components/buttons/camera_icon_button.dart';
@@ -169,43 +168,46 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
                   ),
                 ),
               ),
-              Gap(22),
-              MainButton(
-                onTap: () async {
-                  if (formKey.currentState!.validate()) {
-                    showLoadingDialog(context);
-                    String imageUrl = await UploadImageService.uploadToImageKit(
-                      imageFile,
-                    );
-                    await context
-                        .read<AuthCubit>()
-                        .registerPatientData(
-                          patientModel: PatientModel(
-                            userId: SharedPrefs.getUserID(),
-                            city: addressController.text,
-                            phone: phoneController.text,
-                            bio: bioController.text,
-                            image: imageUrl,
-                            age: int.parse(ageController.text),
-                          ),
-                        )
-                        .then((value) {
-                          context.pop();
-                          showMainSnackBar(
-                            context,
-                            text: 'تمت عملية التسجيل بنجاح',
-                            type: DialogType.success,
-                          );
-                          context.pushToBase(AppRouter.mainScreen);
-                        });
-                  }
-                },
-                text: 'التسجيل',
-                fontWeight: FontWeight.bold,
-                radius: 10,
-              ),
             ],
           ),
+        ),
+      ),
+
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.all(20),
+        child: MainButton(
+          onTap: () async {
+            if (formKey.currentState!.validate()) {
+              showLoadingDialog(context);
+              String imageUrl = await UploadImageService.uploadToImageKit(
+                imageFile,
+              );
+              await context
+                  .read<AuthCubit>()
+                  .registerPatientData(
+                    patientModel: PatientModel(
+                      userId: SharedPrefs.getUserID(),
+                      city: addressController.text,
+                      phone: phoneController.text,
+                      bio: bioController.text,
+                      image: imageUrl,
+                      age: int.parse(ageController.text),
+                    ),
+                  )
+                  .then((value) {
+                    context.pop();
+                    showMainSnackBar(
+                      context,
+                      text: 'تمت عملية التسجيل بنجاح',
+                      type: DialogType.success,
+                    );
+                    context.pushToBase(AppRouter.mainScreen);
+                  });
+            }
+          },
+          text: 'التسجيل',
+          fontWeight: FontWeight.bold,
+          radius: 10,
         ),
       ),
     );

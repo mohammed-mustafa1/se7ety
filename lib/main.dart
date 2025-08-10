@@ -31,7 +31,7 @@ class Se7ety extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
 
-      theme: AppTheme.lightTheme,
+      theme: AppTheme.lightTheme(context),
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,
       routerConfig: AppRouter.routers,

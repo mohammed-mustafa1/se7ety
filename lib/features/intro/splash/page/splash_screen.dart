@@ -42,8 +42,8 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       if (SharedPrefs.getUserType().isNotEmpty) {
         SharedPrefs.getUserType() == UserType.doctor.name
-            ? context.pushTo(AppRouter.doctorRegister)
-            : context.pushTo(AppRouter.patientRegister);
+            ? context.pushToReplace(AppRouter.doctorRegister)
+            : context.pushToReplace(AppRouter.patientRegister);
       } else {
         context.pushToBase(AppRouter.welcome);
       }

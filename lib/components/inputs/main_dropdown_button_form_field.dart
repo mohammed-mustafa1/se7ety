@@ -18,8 +18,10 @@ class MainDropdownButtonFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
+      isDense: false,
       validator: validator,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 16),
         errorMaxLines: 2,
         filled: true,
         fillColor:
@@ -43,6 +45,7 @@ class MainDropdownButtonFormField extends StatelessWidget {
           borderSide: BorderSide.none,
         ),
       ),
+
       dropdownColor:
           Theme.of(context).brightness == Brightness.dark
               ? AppColors.darkColor.withValues(alpha: 3)

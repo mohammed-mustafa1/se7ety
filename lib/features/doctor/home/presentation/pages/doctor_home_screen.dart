@@ -20,6 +20,7 @@ class DoctorHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: kToolbarHeight,
         surfaceTintColor: Colors.transparent,
         actionsPadding: EdgeInsets.symmetric(horizontal: 20),
         actions: [Icon(Icons.notifications_active)],

@@ -123,7 +123,7 @@ class _DoctorEditProfileScreenState extends State<DoctorEditProfileScreen> {
     );
   }
 
-  Future<dynamic> showEditDialog(
+  showEditDialog(
     BuildContext context, {
     required String title,
     required String content,
@@ -132,177 +132,202 @@ class _DoctorEditProfileScreenState extends State<DoctorEditProfileScreen> {
     TextEditingController controller = TextEditingController(text: content);
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
     String? editingValue;
-    return showDialog(
+    return showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        side: BorderSide(color: AppColors.primaryColor, width: 2),
+      ),
       builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            side: BorderSide(color: AppColors.primaryColor, width: 2),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          title: Text(title, textAlign: TextAlign.center),
-          titleTextStyle: TextStyles.getTitle(
-            color:
-                context.brightness == Brightness.light
-                    ? AppColors.darkColor
-                    : AppColors.whiteColor,
-
-            fontWeight: FontWeight.bold,
-          ),
-          content: Form(
-            key: formKey,
-            child:
-                editType == EditType.specialization
-                    ? MainDropdownButtonFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'الرجاء اختيار التخصص';
-                        }
-                        return null;
-                      },
-
-                      items:
-                          specializations.map((e) {
-                            return DropdownMenuItem(value: e, child: Text(e));
-                          }).toList(),
-                      value: editingValue ?? specializations[0],
-                      onChanged: (value) {
-                        editingValue = value ?? specializations[0];
-                      },
-                    )
-                    : TextFormField(
-                      readOnly:
-                          editType == EditType.specialization ||
-                          editType == EditType.openHour ||
-                          editType == EditType.closeHour,
-                      onTap: () {
-                        editType == EditType.openHour ||
-                                editType == EditType.closeHour
-                            ? showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay(
-                                hour: DateTime.now().hour + 1,
-                                minute: DateTime.now().minute,
-                              ),
-                            ).then((value) {
-                              if (value != null) {
-                                editingValue =
-                                    DateTime(
-                                      2025,
-                                      7,
-                                      1,
-                                      value.hour,
-                                      value.minute,
-                                    ).toString();
-                                controller.text = TimeOfDay.fromDateTime(
-                                  DateTime.parse(editingValue!),
-                                ).format(context);
-                              }
-                            })
-                            : null;
-                      },
-                      validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            value.trim().isEmpty) {
-                          return 'الحقل مطلوب';
-                        }
-
-                        if (editType == EditType.phone) {
-                          if (value.length != 11) {
-                            return 'رقم الهاتف غير صالح';
-                          }
-                        }
-                        return null;
-                      },
-                      maxLength: editType == EditType.phone ? 11 : null,
-                      maxLines: null,
-                      inputFormatters:
-                          editType == EditType.phone
-                              ? [
-                                FilteringTextInputFormatter.allow(
-                                  RegExp('[0-9]'),
-                                ),
-                                FilteringTextInputFormatter.digitsOnly,
-                              ]
-                              : [],
-                      keyboardType:
-                          editType == EditType.phone
-                              ? TextInputType.number
-                              : TextInputType.text,
-                      onChanged: (value) {
-                        editingValue = value;
-                      },
-                      decoration: InputDecoration(filled: true),
-                      style: TextStyles.getSmall(fontWeight: FontWeight.bold),
-                      controller: controller,
-                    ),
-          ),
-          actions: [
-            Row(
-              children: [
-                Expanded(
-                  child: MainButton(
-                    height: 45,
-                    onTap: () => context.pop(),
-                    text: 'الغاء',
-                    backgroundColor: Colors.red,
-                  ),
-                ),
-                Gap(16),
-                Expanded(
-                  child: MainButton(
-                    height: 45,
-                    onTap: () async {
-                      if (formKey.currentState!.validate() &&
-                          editingValue != null) {
-                        if (editType == EditType.openHour) {
-                          if (DateTime.parse(
-                                editingValue!,
-                              ).isAfter(doctor!.closeHour!.toDate()) ||
-                              DateTime.parse(
-                                editingValue!,
-                              ).isAtSameMomentAs(doctor!.closeHour!.toDate())) {
-                            showMainSnackBar(
-                              context,
-                              text: 'وقت الفتح يجب ان يكون قبل وقت الاغلاق',
-                              type: DialogType.error,
-                            );
-                            return;
-                          }
-                        }
-                        if (editType == EditType.closeHour) {
-                          if (DateTime.parse(
-                                editingValue!,
-                              ).isBefore(doctor!.openHour!.toDate()) ||
-                              DateTime.parse(
-                                editingValue!,
-                              ).isAtSameMomentAs(doctor!.openHour!.toDate())) {
-                            showMainSnackBar(
-                              context,
-                              text: 'وقت الاغلاق يجب ان يكون بعد وقت الفتح',
-                              type: DialogType.error,
-                            );
-                            return;
-                          }
-                        }
-                        showLoadingDialog(context);
-                        await updateUsereData(
-                          editType: editType,
-                          value: editingValue!,
-                        );
-                        setState(() {
-                          context.pop();
-                          context.pop();
-                        });
-                      }
-                    },
-                    text: 'حفظ التعديل',
-                  ),
-                ),
-              ],
+        return PopScope(
+          canPop: false,
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+              left: 16,
+              right: 16,
+              top: 24,
             ),
-          ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: TextStyles.getTitle(
+                      color:
+                          context.brightness == Brightness.light
+                              ? AppColors.darkColor
+                              : AppColors.whiteColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Gap(16),
+                  Form(
+                    key: formKey,
+                    child:
+                        editType == EditType.specialization
+                            ? MainDropdownButtonFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'الرجاء اختيار التخصص';
+                                }
+                                return null;
+                              },
+                              items:
+                                  specializations.map((e) {
+                                    return DropdownMenuItem(
+                                      value: e,
+                                      child: Text(e),
+                                    );
+                                  }).toList(),
+                              value: editingValue ?? specializations[0],
+                              onChanged: (value) {
+                                editingValue = value ?? specializations[0];
+                              },
+                            )
+                            : TextFormField(
+                              readOnly:
+                                  editType == EditType.specialization ||
+                                  editType == EditType.openHour ||
+                                  editType == EditType.closeHour,
+                              onTap: () {
+                                if (editType == EditType.openHour ||
+                                    editType == EditType.closeHour) {
+                                  showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay(
+                                      hour: DateTime.now().hour + 1,
+                                      minute: DateTime.now().minute,
+                                    ),
+                                  ).then((value) {
+                                    if (value != null) {
+                                      editingValue =
+                                          DateTime(
+                                            2025,
+                                            7,
+                                            1,
+                                            value.hour,
+                                            value.minute,
+                                          ).toString();
+                                      controller.text = TimeOfDay.fromDateTime(
+                                        DateTime.parse(editingValue!),
+                                      ).format(context);
+                                    }
+                                  });
+                                }
+                              },
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    value.trim().isEmpty) {
+                                  return 'الحقل مطلوب';
+                                }
+                                if (editType == EditType.phone) {
+                                  if (value.length != 11) {
+                                    return 'رقم الهاتف غير صالح';
+                                  }
+                                }
+                                return null;
+                              },
+                              maxLength: editType == EditType.phone ? 11 : null,
+                              maxLines: null,
+                              inputFormatters:
+                                  editType == EditType.phone
+                                      ? [
+                                        FilteringTextInputFormatter.allow(
+                                          RegExp('[0-9]'),
+                                        ),
+                                        FilteringTextInputFormatter.digitsOnly,
+                                      ]
+                                      : [],
+                              keyboardType:
+                                  editType == EditType.phone
+                                      ? TextInputType.number
+                                      : TextInputType.text,
+                              onChanged: (value) {
+                                editingValue = value;
+                              },
+                              decoration: InputDecoration(filled: true),
+                              style: TextStyles.getSmall(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              controller: controller,
+                            ),
+                  ),
+                  const Gap(24),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: MainButton(
+                          onTap: () => context.pop(),
+                          text: 'الغاء',
+                          backgroundColor: Colors.red,
+                        ),
+                      ),
+                      Gap(16),
+                      Expanded(
+                        child: MainButton(
+                          onTap: () async {
+                            if (formKey.currentState!.validate() &&
+                                editingValue != null) {
+                              if (editType == EditType.openHour) {
+                                if (DateTime.parse(
+                                      editingValue!,
+                                    ).isAfter(doctor!.closeHour!.toDate()) ||
+                                    DateTime.parse(
+                                      editingValue!,
+                                    ).isAtSameMomentAs(
+                                      doctor!.closeHour!.toDate(),
+                                    )) {
+                                  showMainSnackBar(
+                                    context,
+                                    text:
+                                        'وقت الفتح يجب ان يكون قبل وقت الاغلاق',
+                                    type: DialogType.error,
+                                  );
+                                  return;
+                                }
+                              }
+                              if (editType == EditType.closeHour) {
+                                if (DateTime.parse(
+                                      editingValue!,
+                                    ).isBefore(doctor!.openHour!.toDate()) ||
+                                    DateTime.parse(
+                                      editingValue!,
+                                    ).isAtSameMomentAs(
+                                      doctor!.openHour!.toDate(),
+                                    )) {
+                                  showMainSnackBar(
+                                    context,
+                                    text:
+                                        'وقت الاغلاق يجب ان يكون بعد وقت الفتح',
+                                    type: DialogType.error,
+                                  );
+                                  return;
+                                }
+                              }
+                              await updateUsereData(
+                                editType: editType,
+                                value: editingValue!,
+                              );
+                              setState(() {
+                                context.pop();
+                              });
+                            }
+                          },
+                          text: 'حفظ',
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Gap(16),
+                ],
+              ),
+            ),
+          ),
         );
       },
     );
